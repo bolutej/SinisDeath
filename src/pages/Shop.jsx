@@ -16,7 +16,7 @@ export default function Shop() {
                 <FaShoppingCart className="text-gray-700 hover:text-blue-600 transition-colors" size={28}/>
             </nav>
             <main>
-                <Link to="/product">
+                <Link to="/product" style={{ textDecoration: 'none' }}>
                 <section className="product-card">
                     <div className="product-image-wrap">
                     <img src={mockup} alt="Mockup" loading="lazy"/>
@@ -29,6 +29,7 @@ export default function Shop() {
                 </section>
                 </Link>
 
+                <Link to="/product" style={{ textDecoration: 'none' }}>
                 <section className="product-card">
                     <div className="product-image-wrap">
                     <img src={mockup} alt="Mockup" loading="lazy"/>
@@ -39,7 +40,9 @@ export default function Shop() {
                     {/* <button className="add-to-cart">Add to Cart</button> */}
                     </div>
                 </section>
+                </Link>
 
+                <Link to="/product" style={{ textDecoration: 'none' }}>
                 <section className="product-card">
                     <div className="product-image-wrap">
                     <img src={mockup} alt="Mockup" loading="lazy"/>
@@ -50,7 +53,9 @@ export default function Shop() {
                     {/* <button className="add-to-cart">Add to Cart</button> */}
                     </div>
                 </section>
+                </Link>
 
+                <Link to="/product" style={{ textDecoration: 'none' }}>
                 <section className="product-card">
                     <div className="product-image-wrap">
                     <img src={mockup} alt="Mockup" loading="lazy"/>
@@ -61,7 +66,9 @@ export default function Shop() {
                     {/* <button className="add-to-cart">Add to Cart</button> */}
                     </div>
                 </section>
+                </Link>
 
+                <Link to="/product" style={{ textDecoration: 'none' }}>
                 <section className="product-card">
                     <div className="product-image-wrap">
                     <img src={mockup} alt="Mockup" loading="lazy"/>
@@ -72,7 +79,9 @@ export default function Shop() {
                     {/* <button className="add-to-cart">Add to Cart</button> */}
                     </div>
                 </section>
+                </Link>
 
+                <Link to="/product" style={{ textDecoration: 'none' }}>
                 <section className="product-card">
                     <div className="product-image-wrap">
                     <img src={mockup} alt="Mockup" loading="lazy"/>
@@ -83,6 +92,33 @@ export default function Shop() {
                     {/* <button className="add-to-cart">Add to Cart</button> */}
                     </div>
                 </section>
+                </Link>
+
+                <Link to="/product" style={{ textDecoration: 'none' }}>
+                <section className="product-card">
+                    <div className="product-image-wrap">
+                    <img src={mockup} alt="Mockup" loading="lazy"/>
+                    </div>
+                    <div className="product-info">
+                    <h3 className="product-title">Premuim Tee</h3>
+                    <p className="product-price">$29.99</p>
+                    {/* <button className="add-to-cart">Add to Cart</button> */}
+                    </div>
+                </section>
+                </Link>
+
+                <Link to="/product" style={{ textDecoration: 'none' }}>
+                <section className="product-card">
+                    <div className="product-image-wrap">
+                    <img src={mockup} alt="Mockup" loading="lazy"/>
+                    </div>
+                    <div className="product-info">
+                    <h3 className="product-title">Premuim Tee</h3>
+                    <p className="product-price">$29.99</p>
+                    {/* <button className="add-to-cart">Add to Cart</button> */}
+                    </div>
+                </section>
+                </Link>
             </main>
 
             <footer>
