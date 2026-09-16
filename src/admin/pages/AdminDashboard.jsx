@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { supabase } from '../../supabaseClient'
+import sinisdeath from '../../assets/sinisdeath_logo.svg'
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState({
@@ -37,8 +38,16 @@ export default function AdminDashboard() {
   }, [])
 
   return (
-    <div>
-      <h2 style={{ marginBottom: 24 }}>Dashboard</h2>
+    <div style={{paddingBottom:'200px'}}>
+        <nav style={{display: 'flex', justifyContent: 'center'}}>
+           <a href="/">
+            <img src={sinisdeath} alt="Logo" style={{ width: '340px', height: 'auto', textAlign: 'center'}}/>
+        </a> 
+        </nav>
+    <div style={{paddingLeft: '50px', paddingRight: '50px', paddingTop: '50px'}}>
+        
+        
+      <h2 style={{ marginBottom: 24, fontSize: 50 }}>Dashboard</h2>
 
       <div
         style={{
@@ -66,6 +75,7 @@ export default function AdminDashboard() {
         </Link>
       </div>
     </div>
+    </div>
   )
 }
 
@@ -73,14 +83,14 @@ function StatCard({ label, value }) {
   return (
     <div
       style={{
-        background: '#fafafa',
+        // background: '#fafafa',
         border: '1px solid #e5e5e5',
         borderRadius: 8,
         padding: 16,
       }}
     >
-      <p style={{ fontSize: 13, color: '#666', margin: 0 }}>{label}</p>
-      <p style={{ fontSize: 24, fontWeight: 500, margin: '4px 0 0' }}>{value}</p>
+      <p style={{ fontSize: 20, color: '#ffff', margin: 0, borderBottom: '1px solid #e5e5e5', paddingBottom: 10 }}>{label}</p>
+      <p style={{ fontSize: 24, fontWeight: 500, margin: '4px 0 0', paddingTop: 10  }}>{value}</p>
     </div>
   )
 }
@@ -91,6 +101,6 @@ const linkCardStyle = {
   border: '1px solid #e5e5e5',
   borderRadius: 8,
   textDecoration: 'none',
-  color: '#111',
+  color: '#ffff',
   fontSize: 14,
 }
