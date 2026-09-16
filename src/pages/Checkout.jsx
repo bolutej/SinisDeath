@@ -2,7 +2,9 @@
 import "../App.css"
 import sinisdeath from '../assets/sinisdeath_logo.svg'
 import {Squash as Hamburger} from 'hamburger-react'
+import { MdDelete } from "react-icons/md"
 import mockup from '../assets/mockup.png'
+import { Link } from 'react-router-dom'
 
 export default function Checkout() {
      return (
@@ -18,7 +20,10 @@ export default function Checkout() {
                 <div className="cart">
                     <div className="cart-head">
                     <h1>YOUR CART</h1>
-                    <h2>CONTINUE SHOPPING</h2>
+                    <Link to="/product">
+                        <h2>CONTINUE SHOPPING</h2>
+                    </Link>
+                    
                     </div>
                     <div className="cart-label">
                         <h5>PRODUCT TITLE</h5>
@@ -38,7 +43,7 @@ export default function Checkout() {
                         </div>
                         <div className="cart-quantity">
                             <input type="number" min="1" defaultValue="1" />   
-                            <p>delete</p>   
+                            <MdDelete className="delete"/>  
                              <p>#250,000</p>   
                         </div>
                         
@@ -54,7 +59,7 @@ export default function Checkout() {
                         </div>
                         <div className="cart-quantity">
                             <input type="number" min="1" defaultValue="1" />   
-                            <p>delete</p>   
+                            <MdDelete className="delete"/>    
                              <p>#250,000</p>   
                         </div>
                         
@@ -70,7 +75,7 @@ export default function Checkout() {
                         </div>
                         <div className="cart-quantity">
                             <input type="number" min="1" defaultValue="1" />   
-                            <p>delete</p>   
+                            <MdDelete className="delete"/>     
                              <p>#250,000</p>   
                         </div>
                         

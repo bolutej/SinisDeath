@@ -326,6 +326,9 @@ header img, nav img {
   color: #fff;
   /* text-decoration: underline; */
 }
+.cart h2 {
+  text-decoration: underline;
+}
 .cart img {
   width: 300px;
 }
@@ -380,7 +383,7 @@ header img, nav img {
 }
 
 .checkout-total > div {
-  width: 320px;
+  width: 500px;
   background: #000;
   border-top: 1px solid #fff;
   border-radius: 12px;
@@ -433,6 +436,10 @@ header img, nav img {
 .checkout-total button:hover {
   background: #2a2a2a;
 } 
+.delete {
+  color: white;
+  padding-left: 100px;
+}
 footer  {
   text-align: center;
 }
