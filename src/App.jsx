@@ -9,6 +9,7 @@ import AdminLogin from './admin/AdminLogin'
 import AdminDashboard  from './admin/pages/AdminDashboard'
 import AdminOrders from './admin/pages/AdminOrders'
 import AdminProducts from './admin/pages/AdminProducts'
+import Analytics from './admin/pages/Analytics'
 
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
         <Route path='/admin' element={<AdminDashboard/>} />
         <Route path='/admin/orders' element={<AdminOrders/>} />
         <Route path='/admin/products' element={<AdminProducts/>} />
+        <Route path='/admin/analytics' element={<Analytics/>} />
       </Routes>
     </BrowserRouter>
   )

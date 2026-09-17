@@ -40,9 +40,7 @@ export default function AdminDashboard() {
   return (
     <div style={{paddingBottom:'200px'}}>
         <nav style={{display: 'flex', justifyContent: 'center'}}>
-           <a href="/">
             <img src={sinisdeath} alt="Logo" style={{ width: '340px', height: 'auto', textAlign: 'center'}}/>
-        </a> 
         </nav>
     <div style={{paddingLeft: '50px', paddingRight: '50px', paddingTop: '50px'}}>
         
@@ -72,6 +70,9 @@ export default function AdminDashboard() {
         </Link>
         <Link to="/admin/orders" style={linkCardStyle}>
           View orders →
+        </Link>
+        <Link to="/admin/analytics" style={linkCardStyle}>
+          View Analytics →
         </Link>
       </div>
     </div>

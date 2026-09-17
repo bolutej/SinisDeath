@@ -194,7 +194,7 @@ export default function ProductForm({ product, onDone, onCancel }) {
         <p style={{ color: '#c0392b', fontSize: 13, marginBottom: 16 }}>{error}</p>
       )}
 
-      <form onSubmit={handleSubmit} style={{ maxWidth: 640 }}>
+      <form onSubmit={handleSubmit} style={{ maxWidth: 640, color: '#ffff' }}>
         <Field label="Name">
           <input
             value={form.name}
@@ -397,6 +397,7 @@ export default function ProductForm({ product, onDone, onCancel }) {
               background: 'none',
               border: '1px solid #ccc',
               borderRadius: 6,
+              color: '#ffff'
             }}
           >
             Cancel
@@ -448,6 +449,7 @@ const input = {
   borderRadius: 4,
   fontFamily: 'inherit',
   boxSizing: 'border-box',
+  color: '#ffff'
 }
 
 const miniInput = {
@@ -457,6 +459,7 @@ const miniInput = {
   border: '1px solid #ccc',
   borderRadius: 4,
   boxSizing: 'border-box',
+  color: '#ffff'
 }
 
 const smallBtn = {
@@ -466,4 +469,5 @@ const smallBtn = {
   background: 'none',
   border: '1px solid #ccc',
   borderRadius: 4,
+  color: '#ffff'
 }
