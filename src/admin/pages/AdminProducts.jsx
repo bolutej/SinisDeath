@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../../supabaseClient'
 import ProductForm from './ProductForm'
+import sinisdeath from '../../assets/sinisdeath_logo.svg'
 
 export default function AdminProducts() {
   const [products, setProducts] = useState([])
@@ -80,7 +81,10 @@ export default function AdminProducts() {
   if (loading) return <div>Loading products...</div>
 
   return (
-    <div>
+    <div style={{paddingBottom:'620px', paddingTop: '20px', paddingRight: '80px', paddingLeft: '80px'}}>
+      <nav style={{display: 'flex', justifyContent: 'center'}}>
+                  <img src={sinisdeath} alt="Logo" style={{ width: '340px', height: 'auto', textAlign: 'center'}}/>
+              </nav>
       <div
         style={{
           display: 'flex',
@@ -89,7 +93,7 @@ export default function AdminProducts() {
           marginBottom: 24,
         }}
       >
-        <h2 style={{ margin: 0 }}>Products</h2>
+        <h2 style={{ margin: 0, fontSize: '60px' }}>Products</h2>
         <button
           onClick={() => setEditingProduct({})}
           style={{
@@ -97,7 +101,7 @@ export default function AdminProducts() {
             fontSize: 14,
             cursor: 'pointer',
             border: '1px solid #111',
-            background: '#111',
+            background: '#2c2c2c',
             color: '#fff',
             borderRadius: 6,
           }}

@@ -1,6 +1,7 @@
 // src/admin/pages/ProductForm.jsx
 import { useEffect, useState } from 'react'
 import { supabase } from '../../supabaseClient'
+import sinisdeath from '../../assets/sinisdeath_logo.svg'
 
 // Turns "Classic T-Shirt" into "classic-t-shirt"
 const slugify = (str) =>
@@ -185,8 +186,11 @@ export default function ProductForm({ product, onDone, onCancel }) {
   }
 
   return (
-    <div>
-      <h2 style={{ marginBottom: 24 }}>
+    <div style={{paddingRight: '450px', paddingLeft: '450px', }}>
+      <nav style={{display: 'flex', justifyContent: 'center'}}>
+                        <img src={sinisdeath} alt="Logo" style={{ width: '340px', height: 'auto', textAlign: 'center'}}/>
+                    </nav>
+      <h2 style={{ marginBottom: 24, fontSize: '40px' }}>
         {isEditing ? 'Edit product' : 'New product'}
       </h2>
 
@@ -194,7 +198,7 @@ export default function ProductForm({ product, onDone, onCancel }) {
         <p style={{ color: '#c0392b', fontSize: 13, marginBottom: 16 }}>{error}</p>
       )}
 
-      <form onSubmit={handleSubmit} style={{ maxWidth: 640, color: '#ffff' }}>
+      <form onSubmit={handleSubmit} style={{ maxWidth: 640, color: '#ffff',paddingBottom: '60px' }}>
         <Field label="Name">
           <input
             value={form.name}
@@ -416,7 +420,7 @@ function Field({ label, children }) {
           style={{
             display: 'block',
             fontSize: 13,
-            color: '#666',
+            color: '#ffff',
             marginBottom: 4,
           }}
         >
@@ -449,7 +453,7 @@ const input = {
   borderRadius: 4,
   fontFamily: 'inherit',
   boxSizing: 'border-box',
-  color: '#ffff'
+  color: '#0000'
 }
 
 const miniInput = {
@@ -459,7 +463,7 @@ const miniInput = {
   border: '1px solid #ccc',
   borderRadius: 4,
   boxSizing: 'border-box',
-  color: '#ffff'
+  color: '#0000'
 }
 
 const smallBtn = {
