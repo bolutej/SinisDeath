@@ -4,6 +4,7 @@ import "../App.css"
 // import {Squash as Hamburger} from 'hamburger-react'
 import { FaShoppingCart, FaLessThan } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
+import Bolu from "../assets/Boluslogo.png"
 
 export default function Product() {
     return (
@@ -28,18 +29,27 @@ export default function Product() {
                     <div className="product-section">
                     <h1 className="">SINISDEATH Ungraved Tracksuit</h1>
                     <p className="">#30,000</p>
-                    <div>
-                        <h5>Size</h5>
-                        <select>
-                            <option>Small</option>
-                            <option>Medium</option>
-                            <option>Large</option>
-                        </select>
-                    </div>
-                    <div>
-                        <h5>Quantity</h5>
-                        <input type="number" min="1" defaultValue="1" />
-                    </div>
+                    <div className="product-options">
+  <h5>Size</h5>
+
+  <div className="size-options">
+    <button>XS</button>
+    <button>S</button>
+    <button className="active">M</button>
+    <button>L</button>
+    <button>XL</button>
+    <button>XXL</button>
+    <button>XXXL</button>
+  </div>
+
+  <h5>Quantity (1 in cart)</h5>
+
+  <div className="quantity">
+    <button>−</button>
+    <span>2</span>
+    <button>+</button>
+  </div>
+</div>
                     <Link to="/checkout" style={{ textDecoration: 'none' }}>
                     <button className="add-to-cart">Add to Cart</button>
                     </Link>
@@ -60,6 +70,25 @@ export default function Product() {
                     </div>
                 </section>
             </section>
+            <footer className="footer">
+                <div className="footer-content">
+                    <p className="footer-title">Built by</p>
+            
+                    <a
+                        href="https://x.com/BoluTejumol"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="footer-logo"
+                    >
+                        <img src={Bolu} alt="Bolu" />
+                    </a>
+                    <div className="footer-line"></div>
+            
+                    <p className="footer-copy">
+                        © 2026 Bolu. All rights reserved.
+                    </p>
+                </div>
+            </footer>
         </>
     )
 }

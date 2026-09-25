@@ -19,6 +19,68 @@ nav {
   padding-left: 120px;
   padding-right: 120px;
 }
+
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  /* background: white; */
+  position: relative;
+  z-index: 60;
+}
+
+
+.cart-icon {
+  color: #ffff;
+  cursor: pointer;
+}
+
+/* Dark background behind menu */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 40;
+}
+
+/* Menu hidden by default */
+.side-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 260px;
+  background: #111;
+  padding: 80px 24px 24px;
+  box-sizing: border-box;
+  z-index: 50;
+
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  transform: translateX(-100%);
+  transition: transform 0.3s ease-in-out;
+
+  
+}
+
+/* Menu visible */
+.side-menu.open {
+  transform: translateX(0);
+}
+
+/* Menu links */
+.side-menu a {
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
+}
+
+.side-menu a:hover {
+  color: #60a5fa;
+}
 .back {
   display: flex;
   align-items: center;
@@ -68,7 +130,7 @@ header img, nav img {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 90px;
-    padding-top: 80px;
+    padding-top: 40px;
     /* max-width: 1400px; */
     margin: 0 auto;
   }
@@ -82,7 +144,7 @@ header img, nav img {
     display: flex;
     flex-direction: column;
     text-decoration: none;
-    padding-bottom: 30px;
+    padding-bottom: 10px;
     /* color: inherit; */
   }
  
@@ -93,7 +155,7 @@ header img, nav img {
     justify-content: center;
     aspect-ratio: 1 / 1;
     overflow: hidden;
-    margin-bottom: 20px;
+    margin-bottom: 0px;
   }
  
   .product-image-wrap img {
@@ -104,6 +166,8 @@ header img, nav img {
  
   .product-info {
     text-align: center;
+    position: relative;
+    
   }
  
   .product-title {
@@ -111,10 +175,56 @@ header img, nav img {
     font-weight: 700;
     letter-spacing: 0.03em;
     text-transform: uppercase;
-    margin: 0 0 6px;
+    margin: 0
   }
  
- 
+ .product-options h5 {
+  margin: 12px 0 8px;
+  font-weight: 400;
+}
+
+.size-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.size-options button {
+  width: 65px;
+  height: 37px;
+  border: 1px solid #999;
+  border-radius: 20px;
+  background: white;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.size-options button.active {
+  background: black;
+  color: white;
+  border-color: black;
+}
+
+.quantity {
+  width: 140px;
+  height: 45px;
+  border: 1px solid #888;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.quantity button {
+  border: none;
+  background: transparent;
+  font-size: 20px;
+  cursor: pointer;
+  color: #ffff;
+}
+
+.quantity span {
+  font-size: 15px;
+}
   .product-price {
     font-size: 18px;
     font-weight: 700;
@@ -131,7 +241,7 @@ header img, nav img {
   background: var(--black);
   color: var(--white);
   font-family: 'Inter', Arial, sans-serif;
-  padding: 64px 24px;
+  padding: 54px 24px;
 }
  
 /* image wrapper — the un-classed first div */
@@ -367,13 +477,8 @@ header img, nav img {
   display: flex;
   margin-bottom: 30px;
   align-items: center;
+  margin-left: 300px;  
 }
-
-.cart-quantity input {
-  height: 30px;
-  margin-left: 280px;  
-}
-
 .cart-quantity p {
   margin-left: 63px;
 }
@@ -442,6 +547,58 @@ header img, nav img {
   color: white;
   padding-left: 100px;
 }
-footer  {
-  text-align: center;
+.footer {
+    background: #000;
+    color: #fff;
+    margin-top: 80px;
+    padding: 150px 20px 25px;
+    text-align: center;
+}
+
+.footer-content {
+    max-width: 1000px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.footer-title {
+    font-size: 24px;
+    font-weight: 80px;
+    color: #aaa;
+    margin: 0 0 15px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.footer-logo {
+    display: block;
+    width: 180px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.footer-logo img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.footer-logo:hover {
+    transform: scale(1.05);
+    opacity: 0.8;
+}
+
+.footer-line {
+    width: 100%;
+    max-width: 700px;
+    height: 1px;
+    background: #222;
+    margin-bottom: 20px;
+}
+
+.footer-copy {
+    color: #666;
+    font-size: 13px;
+    margin: 0;
 }

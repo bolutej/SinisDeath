@@ -1,20 +1,12 @@
-import sinisdeath from '../assets/sinisdeath_logo.svg'
 import mockup from '../assets/mockup.png'
 import "../App.css"
-import {Squash as Hamburger} from 'hamburger-react'
-import { FaShoppingCart } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
+import NavBar from './NavBar'
 
 export default function Shop() {
     return (
         <>
-            <nav>
-                <Hamburger toggled={false} toggle={() => {}} />
-                <a href="/">
-                    <img src={sinisdeath} alt="Logo" />
-                </a>
-                <FaShoppingCart className="text-gray-700 hover:text-blue-600 transition-colors" size={28}/>
-            </nav>
+            <NavBar />
             <main>
                 <Link to="/product" style={{ textDecoration: 'none' }}>
                 <section className="product-card">

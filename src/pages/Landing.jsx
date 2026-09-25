@@ -1,7 +1,7 @@
 import sinisdeath from '../assets/sinisdeath_logo.svg'
 import { Link } from 'react-router-dom'
 import "../App.css"
-import Bolu from "../assets/letter-b-logo.svg"
+import Bolu from "../assets/Boluslogo.png"
 
 export default function Landingpage() {
     return (
@@ -13,13 +13,26 @@ export default function Landingpage() {
                 <h1><Link to="/shop">Shop</Link></h1>
                 <h1><Link to="/socials">Socials</Link></h1>
             </main>
-            <div className="currency-input">
-                <input type="text" placeholder="NGN" style={{ border: '1px solid #ccc', padding: '5px' }} />
-            </div>
-            <footer>
-                <h2>Built by:</h2>
-                <a href="https://x.com/BoluTejumol" target="_blank" > <img src={Bolu} alt="Bolu" /></a>
-            </footer>
+            
+            <footer className="footer">
+    <div className="footer-content">
+        <p className="footer-title">Built by</p>
+
+        <a
+            href="https://x.com/BoluTejumol"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="footer-logo"
+        >
+            <img src={Bolu} alt="Bolu" />
+        </a>
+        <div className="footer-line"></div>
+
+        <p className="footer-copy">
+            © 2026 Bolu. All rights reserved.
+        </p>
+    </div>
+</footer>
         </>
     )
 }

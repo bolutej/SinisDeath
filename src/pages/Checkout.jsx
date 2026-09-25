@@ -5,17 +5,13 @@ import {Squash as Hamburger} from 'hamburger-react'
 import { MdDelete } from "react-icons/md"
 import mockup from '../assets/mockup.png'
 import { Link } from 'react-router-dom'
+import NavBar from './NavBar'
+import Bolu from "../assets/Boluslogo.png"
 
 export default function Checkout() {
      return (
         <>
-             <nav>
-                <Hamburger toggled={false} toggle={() => {}} />
-                <a href="/">
-                    <img src={sinisdeath} alt="Logo" />
-                </a>
-                <h1></h1>
-            </nav>
+             <NavBar />
             <div className="checkout">
                 <div className="cart">
                     <div className="cart-head">
@@ -42,7 +38,11 @@ export default function Checkout() {
                         </div>
                         </div>
                         <div className="cart-quantity">
-                            <input type="number" min="1" defaultValue="1" />   
+                            <div className="quantity">
+                                <button>−</button>
+                                <span>2</span>
+                                <button>+</button>
+                            </div>  
                             <MdDelete className="delete"/>  
                              <p>#250,000</p>   
                         </div>
@@ -58,7 +58,11 @@ export default function Checkout() {
                         </div>
                         </div>
                         <div className="cart-quantity">
-                            <input type="number" min="1" defaultValue="1" />   
+                            <div className="quantity">
+                                <button>−</button>
+                                <span>2</span>
+                                <button>+</button>
+                            </div>  
                             <MdDelete className="delete"/>    
                              <p>#250,000</p>   
                         </div>
@@ -74,7 +78,11 @@ export default function Checkout() {
                         </div>
                         </div>
                         <div className="cart-quantity">
-                            <input type="number" min="1" defaultValue="1" />   
+                            <div className="quantity">
+                                <button>−</button>
+                                <span>2</span>
+                                <button>+</button>
+                            </div>  
                             <MdDelete className="delete"/>     
                              <p>#250,000</p>   
                         </div>
@@ -98,6 +106,25 @@ export default function Checkout() {
                 </div>
 
             </div>
+            <footer className="footer">
+                <div className="footer-content">
+                    <p className="footer-title">Built by</p>
+            
+                    <a
+                        href="https://x.com/BoluTejumol"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="footer-logo"
+                    >
+                        <img src={Bolu} alt="Bolu" />
+                    </a>
+                    <div className="footer-line"></div>
+            
+                    <p className="footer-copy">
+                        © 2026 Bolu. All rights reserved.
+                    </p>
+                </div>
+            </footer>
         </>
      )
 }
