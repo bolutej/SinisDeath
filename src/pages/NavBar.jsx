@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import sinisdeath from '../assets/sinisdeath_logo.svg'
 import { Squash as Hamburger } from "hamburger-react";
 import "../App.css"
-import { useCart } from '../context/CartContext'
+import {useCart} from '../context/CartContext'
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);

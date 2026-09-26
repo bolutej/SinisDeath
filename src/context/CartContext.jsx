@@ -5,7 +5,7 @@ const CartContext = createContext()
 
 const STORAGE_KEY = 'cart'
 
-export default function CartProvider({ children }) {
+export function CartProvider({ children }) {
   const [items, setItems] = useState(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY)

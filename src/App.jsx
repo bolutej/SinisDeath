@@ -14,7 +14,7 @@ import AdminDashboard  from './admin/pages/AdminDashboard'
 import AdminOrders from './admin/pages/AdminOrders'
 import AdminProducts from './admin/pages/AdminProducts'
 import AdminAnalytics from './admin/pages/AdminAnalytics'
-import CartProvider from './context/CartContext'
+import {CartProvider} from './context/CartContext'
 import RequireAdmin from './admin/RequireAdmin'
 
 function AppRouutes() {

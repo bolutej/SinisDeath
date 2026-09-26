@@ -11,6 +11,8 @@ const slugify = (str) =>
     .replace(/[^a-z0-9\s-]/g, '')
     .replace(/\s+/g, '-')
 
+const SIZE_OPTIONS = ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL']
+
 export default function ProductForm({ product, onDone, onCancel }) {
   const isEditing = Boolean(product?.id)
 
@@ -413,12 +415,18 @@ export default function ProductForm({ product, onDone, onCancel }) {
             }}
           >
             <MiniField label="Size">
-              <input
+              <select
                 value={variant.size ?? ''}
                 onChange={(e) => updateVariant(i, 'size', e.target.value)}
-                placeholder="M"
                 style={miniInput}
-              />
+              >
+                <option value="">No size</option>
+                {SIZE_OPTIONS.map((size) => (
+                  <option key={size} value={size}>
+                    {size}
+                  </option>
+                ))}
+              </select>
             </MiniField>
             <MiniField label="Color">
               <input
@@ -544,7 +552,7 @@ const input = {
   borderRadius: 4,
   fontFamily: 'inherit',
   boxSizing: 'border-box',
-  color: '#ffff',
+  color: '#111',
 }
 
 const miniInput = {
@@ -554,7 +562,7 @@ const miniInput = {
   border: '1px solid #fff',
   borderRadius: 4,
   boxSizing: 'border-box',
-  color: '#ffff',
+  color: '#111',
 }
 
 const smallBtn = {
@@ -565,4 +573,4 @@ const smallBtn = {
   border: '1px solid #fff',
   borderRadius: 4,
   color: '#fff',
-}
+} 
