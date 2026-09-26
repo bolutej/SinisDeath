@@ -128,7 +128,7 @@ export default function AdminOrders() {
               </button>
 
               <div style={{ fontSize: 14, whiteSpace: 'nowrap' }}>
-                ${Number(order.total_amount).toFixed(2)}
+                ₦{Number(order.total_amount).toFixed(2)}
               </div>
 
               <select
@@ -173,7 +173,7 @@ export default function AdminOrders() {
                           {[item.size, item.color].filter(Boolean).join(' / ') || '—'}
                         </td>
                         <td>{item.quantity}</td>
-                        <td>${Number(item.price_at_purchase).toFixed(2)}</td>
+                        <td>₦{Number(item.price_at_purchase).toFixed(2)}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -181,7 +181,7 @@ export default function AdminOrders() {
 
                 {Number(order.discount_amount) > 0 && (
                   <p style={{ fontSize: 13, margin: '0 0 16px', color: '#666' }}>
-                    Discount applied: −${Number(order.discount_amount).toFixed(2)}
+                    Discount applied: −₦{Number(order.discount_amount).toFixed(2)}
                   </p>
                 )}
 

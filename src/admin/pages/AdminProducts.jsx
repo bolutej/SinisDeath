@@ -133,7 +133,7 @@ export default function AdminProducts() {
               <tr key={p.id} style={{ borderTop: '1px solid #eee' }}>
                 <td style={td}>{p.name}</td>
                 <td style={td}>{p.categories?.name ?? '—'}</td>
-                <td style={td}>${Number(p.price).toFixed(2)}</td>
+                <td style={td}>₦{Number(p.price).toFixed(2)}</td>
                 <td style={td}>{p.product_variants?.length ?? 0}</td>
                 <td style={td}>
                   <button

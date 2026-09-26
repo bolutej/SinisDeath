@@ -60,7 +60,7 @@ export default function AdminDashboard() {
         <StatCard label="Total orders" value={loading ? '—' : stats.totalOrders} />
         <StatCard
           label="Revenue"
-          value={loading ? '—' : `$${stats.revenue.toFixed(2)}`}
+          value={loading ? '—' : `₦${stats.revenue.toFixed(2)}`}
         />
       </div>
 

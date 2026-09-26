@@ -187,6 +187,7 @@ header img, nav img {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
+  
 }
 
 .size-options button {
@@ -197,6 +198,7 @@ header img, nav img {
   background: white;
   cursor: pointer;
   font-size: 14px;
+  color: black;
 }
 
 .size-options button.active {
@@ -430,7 +432,7 @@ header img, nav img {
   margin: 12px 0 0;
   max-width: 60ch;
 }
-.checkout {
+.cartt {
   padding-left: 12rem;
   padding-right: 12rem;
 }
@@ -477,7 +479,7 @@ header img, nav img {
   display: flex;
   margin-bottom: 30px;
   align-items: center;
-  margin-left: 300px;  
+  margin-left: 30px;  
 }
 .cart-quantity p {
   margin-left: 63px;

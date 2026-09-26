@@ -24,10 +24,16 @@ export default function ProductForm({ product, onDone, onCancel }) {
     stock_quantity: 0,
     slug: '',
     is_active: true,
+    image_url: '',
   })
   const [variants, setVariants] = useState([])
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState(null)
+
+  // Image upload state
+  const [imageFile, setImageFile] = useState(null)
+  const [imagePreview, setImagePreview] = useState(null)
+  const [uploadingImage, setUploadingImage] = useState(false)
 
   // Load categories, plus the full product + variants if editing
   useEffect(() => {
@@ -55,6 +61,7 @@ export default function ProductForm({ product, onDone, onCancel }) {
             stock_quantity: full.stock_quantity ?? 0,
             slug: full.slug ?? '',
             is_active: full.is_active ?? true,
+            image_url: full.image_url ?? '',
           })
           setVariants(full.product_variants ?? [])
         }
@@ -78,6 +85,42 @@ export default function ProductForm({ product, onDone, onCancel }) {
       slug: isEditing ? f.slug : slugify(value),
     }))
   }
+
+  // --- Image handling ---
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0]
+    if (!file) return
+    setImageFile(file)
+    setImagePreview(URL.createObjectURL(file)) // instant local preview
+  }
+
+  const uploadImage = async (productId) => {
+    if (!imageFile) return null
+
+    setUploadingImage(true)
+    const fileExt = imageFile.name.split('.').pop()
+    const filePath = `${productId}-${Date.now()}.${fileExt}`
+
+    const { error: uploadError } = await supabase.storage
+      .from('product-images')
+      .upload(filePath, imageFile, { upsert: true })
+
+    if (uploadError) {
+      setError(`Image upload failed: ${uploadError.message}`)
+      setUploadingImage(false)
+      return null
+    }
+
+    const { data } = supabase.storage
+      .from('product-images')
+      .getPublicUrl(filePath)
+
+    setUploadingImage(false)
+    return data.publicUrl
+  }
+
+  // --- Variants ---
 
   const addVariant = () =>
     setVariants((v) => [
@@ -106,12 +149,18 @@ export default function ProductForm({ product, onDone, onCancel }) {
     setVariants((v) => v.filter((_, i) => i !== index))
   }
 
+  // --- Submit ---
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     setError(null)
     setSaving(true)
 
-    const payload = {
+    let productId = product?.id
+
+    // Save the product first (without a new image_url) so we have an ID
+    // to name the uploaded file after.
+    const basePayload = {
       name: form.name,
       description: form.description || null,
       price: Number(form.price),
@@ -122,12 +171,10 @@ export default function ProductForm({ product, onDone, onCancel }) {
       is_active: form.is_active,
     }
 
-    let productId = product?.id
-
     if (isEditing) {
       const { error } = await supabase
         .from('products')
-        .update(payload)
+        .update(basePayload)
         .eq('id', productId)
       if (error) {
         setError(error.message)
@@ -137,7 +184,7 @@ export default function ProductForm({ product, onDone, onCancel }) {
     } else {
       const { data, error } = await supabase
         .from('products')
-        .insert(payload)
+        .insert(basePayload)
         .select('id')
         .single()
       if (error) {
@@ -146,6 +193,24 @@ export default function ProductForm({ product, onDone, onCancel }) {
         return
       }
       productId = data.id
+    }
+
+    // If a new image was picked, upload it now and save its URL
+    if (imageFile) {
+      const uploadedUrl = await uploadImage(productId)
+      if (!uploadedUrl) {
+        setSaving(false)
+        return // upload failed, error already set by uploadImage
+      }
+      const { error: imgError } = await supabase
+        .from('products')
+        .update({ image_url: uploadedUrl })
+        .eq('id', productId)
+      if (imgError) {
+        setError(imgError.message)
+        setSaving(false)
+        return
+      }
     }
 
     // Save variants: update existing, insert new
@@ -186,10 +251,10 @@ export default function ProductForm({ product, onDone, onCancel }) {
   }
 
   return (
-    <div style={{paddingRight: '450px', paddingLeft: '450px', }}>
-      <nav style={{display: 'flex', justifyContent: 'center'}}>
-                        <img src={sinisdeath} alt="Logo" style={{ width: '340px', height: 'auto', textAlign: 'center'}}/>
-                    </nav>
+    <div style={{ paddingRight: '450px', paddingLeft: '450px' }}>
+      <nav style={{ display: 'flex', justifyContent: 'center' }}>
+        <img src={sinisdeath} alt="Logo" style={{ width: '340px', height: 'auto', textAlign: 'center' }} />
+      </nav>
       <h2 style={{ marginBottom: 24, fontSize: '40px' }}>
         {isEditing ? 'Edit product' : 'New product'}
       </h2>
@@ -198,7 +263,7 @@ export default function ProductForm({ product, onDone, onCancel }) {
         <p style={{ color: '#c0392b', fontSize: 13, marginBottom: 16 }}>{error}</p>
       )}
 
-      <form onSubmit={handleSubmit} style={{ maxWidth: 640, color: '#ffff',paddingBottom: '60px' }}>
+      <form onSubmit={handleSubmit} style={{ maxWidth: 640, color: '#fff', paddingBottom: '60px' }}>
         <Field label="Name">
           <input
             value={form.name}
@@ -276,6 +341,32 @@ export default function ProductForm({ product, onDone, onCancel }) {
             />
           </Field>
         </div>
+
+        <Field label="Product image">
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+            style={{ ...input, padding: '6px 0' }}
+          />
+          {(imagePreview || form.image_url) && (
+            <img
+              src={imagePreview || form.image_url}
+              alt="Preview"
+              style={{
+                width: 120,
+                height: 120,
+                objectFit: 'cover',
+                marginTop: 8,
+                borderRadius: 6,
+                border: '1px solid #333',
+              }}
+            />
+          )}
+          {uploadingImage && (
+            <p style={{ fontSize: 12, color: '#888', marginTop: 4 }}>Uploading...</p>
+          )}
+        </Field>
 
         <Field label="">
           <label style={{ fontSize: 14, display: 'flex', gap: 8, alignItems: 'center' }}>
@@ -401,7 +492,7 @@ export default function ProductForm({ product, onDone, onCancel }) {
               background: 'none',
               border: '1px solid #ccc',
               borderRadius: 6,
-              color: '#ffff'
+              color: '#fff',
             }}
           >
             Cancel
@@ -420,7 +511,7 @@ function Field({ label, children }) {
           style={{
             display: 'block',
             fontSize: 13,
-            color: '#ffff',
+            color: '#fff',
             marginBottom: 4,
           }}
         >
@@ -449,21 +540,21 @@ const input = {
   width: '100%',
   padding: '8px 10px',
   fontSize: 14,
-  border: '1px solid #ccc',
+  border: '1px solid #fff',
   borderRadius: 4,
   fontFamily: 'inherit',
   boxSizing: 'border-box',
-  color: '#0000'
+  color: '#ffff',
 }
 
 const miniInput = {
   width: 100,
   padding: '6px 8px',
   fontSize: 13,
-  border: '1px solid #ccc',
+  border: '1px solid #fff',
   borderRadius: 4,
   boxSizing: 'border-box',
-  color: '#0000'
+  color: '#ffff',
 }
 
 const smallBtn = {
@@ -471,7 +562,7 @@ const smallBtn = {
   fontSize: 12,
   cursor: 'pointer',
   background: 'none',
-  border: '1px solid #ccc',
+  border: '1px solid #fff',
   borderRadius: 4,
-  color: '#ffff'
+  color: '#fff',
 }

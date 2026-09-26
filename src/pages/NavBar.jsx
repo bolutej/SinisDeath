@@ -4,9 +4,11 @@ import { Link } from 'react-router-dom'
 import sinisdeath from '../assets/sinisdeath_logo.svg'
 import { Squash as Hamburger } from "hamburger-react";
 import "../App.css"
+import { useCart } from '../context/CartContext'
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const { totalItems } = useCart();
 
   return (
     <>
@@ -44,13 +46,13 @@ export default function Navbar() {
         </a>
 
         <a
-          href="/checkout"
+          href="/cart"
           onClick={() => setMenuOpen(false)}
         >
           Cart
         </a>
         <a
-          href="/checkout"
+          href="/info"
           onClick={() => setMenuOpen(false)}
         >
           Info
@@ -63,15 +65,35 @@ export default function Navbar() {
             className="logo"
           />
         </a>
-        <Link to="/checkout" style={{ textDecoration: 'none' }}>
+        <Link to="/cart" style={{ textDecoration: 'none', position: 'relative', display: 'inline-block' }}>
         <FaShoppingCart
           className="cart-icon"
           size={28}
         />
+        {totalItems > 0 && (
+            <span
+              style={{
+                position: 'absolute',
+                top: -8,
+                right: -8,
+                background: '#e07a5f',
+                color: '#fff',
+                borderRadius: '50%',
+                width: 18,
+                height: 18,
+                fontSize: 11,
+                fontWeight: 600,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                lineHeight: 1,
+              }}
+            >
+              {totalItems > 9 ? '9+' : totalItems}
+            </span>
+          )}
         </Link>
       </nav>
-
-      {/* Overlay */}
       
     </>
   );
