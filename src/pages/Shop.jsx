@@ -3,6 +3,7 @@ import "../App.css"
 import { Link } from 'react-router-dom'
 import NavBar from './NavBar'
 import { supabase } from '../supabaseClient'
+import { useRegion } from '../context/RegionContext'
 
 export default function Shop() {
   const [products, setProducts] = useState([])
@@ -12,6 +13,8 @@ export default function Shop() {
   useEffect(() => {
     fetchProducts()
   }, [])
+
+  const { formatPrice } = useRegion()
 
   const fetchProducts = async () => {
     const { data, error } = await supabase
@@ -69,7 +72,7 @@ export default function Shop() {
               </div>
               <div className="product-info">
                 <h3 className="product-title">{product.name}</h3>
-                <p className="product-price">₦{Number(product.price).toLocaleString()}</p>
+                <p className="product-price">{formatPrice(product.price)}</p>
 
                 {(() => {
                   const colors = [...new Set(

@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react'
-import sinisdeath from '../assets/sinisdeath_logo.svg'
+// import sinisdeath from '../assets/sinisdeath_logo.svg'
 import mockup from '../assets/mockup.png'
 import "../App.css"
-import { FaShoppingCart, FaLessThan } from 'react-icons/fa'
+import { FaLessThan } from 'react-icons/fa'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import Bolu from "../assets/Boluslogo.png"
 import { supabase } from '../supabaseClient'
 import { useCart } from '../context/CartContext'
 import Navbar from './NavBar'
+import { useRegion } from '../context/RegionContext'
 
 const SIZE_ORDER = ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL']
 
@@ -27,6 +28,8 @@ export default function Product() {
   useEffect(() => {
     fetchProduct()
   }, [slug])
+
+  const { formatPrice } = useRegion()
 
   const fetchProduct = async () => {
     setLoading(true)
@@ -139,7 +142,7 @@ export default function Product() {
           </div>
           <div className="product-section">
             <h1 className="">{product.name}</h1>
-            <p className="">₦{Number(selectedVariant?.price ?? product.price).toLocaleString()}</p>
+            <p className="">{formatPrice(selectedVariant?.price ?? product.price)}</p>
 
             <div className="product-options">
               {availableColors.length > 0 && (

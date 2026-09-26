@@ -15,6 +15,7 @@ import AdminOrders from './admin/pages/AdminOrders'
 import AdminProducts from './admin/pages/AdminProducts'
 import AdminAnalytics from './admin/pages/AdminAnalytics'
 import {CartProvider} from './context/CartContext'
+import { RegionProvider } from './context/RegionContext'
 import RequireAdmin from './admin/RequireAdmin'
 
 function AppRouutes() {
@@ -40,11 +41,13 @@ function AppRouutes() {
 
 function App() {
   return (
+    <RegionProvider>
     <CartProvider>
     <BrowserRouter>
       <AppRouutes />
     </BrowserRouter>
     </CartProvider>
+    </RegionProvider>
   )
 }
 

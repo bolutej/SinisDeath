@@ -5,9 +5,12 @@ import { Link } from 'react-router-dom'
 import NavBar from './NavBar'
 import Bolu from "../assets/Boluslogo.png"
 import { useCart } from '../context/CartContext'
+import { useRegion } from '../context/RegionContext'
 
 export default function Cart() {
     const { items, updateQuantity, removeItem, totalPrice } = useCart()
+
+    const { formatPrice } = useRegion()
 
      return (
        <>
@@ -46,7 +49,7 @@ export default function Cart() {
                           {[item.size, item.color].filter(Boolean).join(' / ')}
                         </p>
                       )}
-                      <p>₦{item.price.toLocaleString()}</p>
+                      <p>{formatPrice(item.price)}</p>
                     </div>
                   </div>
                   <div className="cart-quantity">
@@ -72,7 +75,7 @@ export default function Cart() {
                       onClick={() => removeItem(item.productId, item.variantId)}
                       style={{ cursor: 'pointer' }}
                     />
-                    <p>₦{(item.price * item.quantity).toLocaleString()}</p>
+                    <p>{formatPrice(item.price * item.quantity)}</p>
                   </div>
                 </div>
               ))}
@@ -87,7 +90,7 @@ export default function Cart() {
             <h2>Order Summary</h2>
             <div className="checkout-total-item">
               <p>SUB-TOTAL</p>
-              <p>₦{totalPrice.toLocaleString()}</p>
+              <p>{formatPrice(totalPrice)}</p>
             </div>
             <div className="checkout-total-item">
               <p>SHIPPING</p>
