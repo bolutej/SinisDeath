@@ -2,35 +2,12 @@ import sinisdeath from '../assets/sinisdeath_logo.svg'
 import { Link } from 'react-router-dom'
 import "../App.css"
 import Bolu from "../assets/Boluslogo.png"
-import { useRegion } from '../context/RegionContext'
 import RegionPicker from '../pages/RegionPicker'
 
 export default function Landingpage() {
-  const { region, setPickerOpen } = useRegion()
-
   return (
     <>
       <RegionPicker />
-
-      <button
-        onClick={() => setPickerOpen(true)}
-        style={{
-          position: 'fixed',
-          top: 20,
-          right: 20,
-          background: 'transparent',
-          color: '#fff',
-          border: '1px solid rgba(255,255,255,0.3)',
-          borderRadius: 4,
-          padding: '6px 12px',
-          fontSize: 13,
-          fontFamily: 'inherit',
-          cursor: 'pointer',
-          zIndex: 10,
-        }}
-      >
-        {region.label} ({region.currency})
-      </button>
 
       <header>
         <img src={sinisdeath} alt="Logo" />

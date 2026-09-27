@@ -146,7 +146,7 @@ header img, nav img {
     /* color: inherit; */
   }
   .product-card:hover .product-image-wrap img {
-  transform: scale(1.10);
+  transform: scale(1.5);
 }
  
   .product-image-wrap {
@@ -605,4 +605,124 @@ header img, nav img {
     color: #666;
     font-size: 13px;
     margin: 0;
+}
+
+
+/* ============================================================
+   MOBILE RESPONSIVENESS
+   ============================================================ */
+
+@media (max-width: 768px) {
+  nav {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  header img,
+  nav img {
+    width: 160px;
+  }
+
+  .back {
+    padding-left: 16px;
+  }
+
+  .landing-page {
+    margin: 60px 24px;
+    padding-left: 0;
+    padding-right: 0;
+    gap: 24px;
+  }
+
+  .landing-page h1 a {
+    font-size: 40px;
+  }
+
+  main {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    padding: 24px 16px 0;
+  }
+
+  .product-each {
+    flex-direction: column;
+    gap: 24px;
+    padding: 24px 16px;
+  }
+
+  .product-section h1 {
+    font-size: 28px;
+  }
+
+  .side-menu {
+    width: 80vw;
+  }
+
+  /* --- Cart page --- */
+  .cartt {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  /* The header row (PRODUCT TITLE / QUANTITY / TOTAL) relies on a
+     270px fixed offset to line up with desktop columns — that offset
+     makes no sense on a narrow screen, and quantity/price already show
+     next to each item below, so we just hide the header row on mobile. */
+  .cart-label {
+    display: none;
+  }
+
+  .cart-main {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    padding-top: 24px;
+  }
+
+  .cart img {
+    width: 140px;
+  }
+
+  .cart-quantity {
+    margin-left: 0;
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .cart-quantity p {
+    margin-left: 0;
+  }
+
+  .delete {
+    padding-left: 0;
+  }
+
+  /* --- Checkout summary --- */
+  .checkout-total {
+    padding: 0 16px;
+  }
+
+  .checkout-total > div {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .footer {
+    padding: 60px 16px 25px;
+  }
+}
+
+@media (max-width: 480px) {
+  main {
+    grid-template-columns: 1fr;
+  }
+
+  .landing-page h1 a {
+    font-size: 32px;
+  }
+
+  header img,
+  nav img {
+    width: 130px;
+  }
 }

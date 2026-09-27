@@ -3,39 +3,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import Landing from "./Landing";
 
 import '../App.css';
-/**
- * ScrambleLoadingPage
- * ---------------------------------------------------------------------
- * A full-screen loading overlay: the brand name decrypts itself (random
- * glyphs -> real letters, left to right), then the overlay crossfades
- * away to reveal the actual page content underneath.
- *
- * Two ways to use it:
- *
- * 1) UNCONTROLLED (just a timed splash):
- *      <ScrambleLoadingPage minDuration={2200}>
- *        <YourRealPage />
- *      </ScrambleLoadingPage>
- *    Loader shows for at least `minDuration` ms, then reveals children.
- *
- * 2) CONTROLLED (tied to real data loading):
- *      const [ready, setReady] = useState(false);
- *      useEffect(() => { fetchStuff().then(() => setReady(true)); }, []);
- *      <ScrambleLoadingPage isReady={ready} minDuration={1200}>
- *        <YourRealPage />
- *      </ScrambleLoadingPage>
- *    Loader waits for BOTH minDuration to pass AND isReady to become
- *    true, whichever finishes last, then crossfades into children.
- *
- * Props:
- *  - wordA, wordB:     the two color segments of the brand word
- *  - accentColor:      accent color (wordB, glow, cursor, rule)
- *  - minDuration:      minimum ms the loader stays up (default 2200)
- *  - isReady:          optional bool; if omitted, loader is uncontrolled
- *                       and auto-finishes after minDuration
- *  - onLoadingComplete: optional callback fired once the fade-out ends
- *  - children:          the real page content revealed underneath
- */
+
 export default function ScrambleLoadingPage({
   wordA = "SIN",
   wordB = "!SDEATH",
@@ -128,7 +96,7 @@ export default function ScrambleLoadingPage({
           style={{
             position: "fixed",
             inset: 0,
-            // zIndex: 9999,
+            zIndex: 9999,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
