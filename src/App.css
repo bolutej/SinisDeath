@@ -1,9 +1,23 @@
 @import url('https://fonts.googleapis.com/css2?family=Anton&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
+/* Light-theme values for the --black/--white/etc custom properties used
+   throughout this file (.product-each, .dets, form fields...). These
+   variables aren't defined in App.css itself, so if they're declared in
+   another stylesheet (e.g. index.css) that loads BEFORE this file, this
+   block overrides them here. If that other file loads AFTER App.css,
+   move this :root block there instead so it wins the cascade. */
+:root {
+  --black: #ffffff;
+  --white: #000000;
+  --surface: #f5f5f5;
+  --border: #dddddd;
+  --muted: #666666;
+}
+
 body {
-  background-color: #000000;
+  background-color: #ffffff;
   font-family: 'Poppins', sans-serif;
-  color: #ffffff;
+  color: #000000;
   width: 100%;
   margin: 0;
 }
@@ -32,7 +46,7 @@ nav {
 
 
 .cart-icon {
-  color: #ffff;
+  color: #000000;
   cursor: pointer;
 }
 
@@ -51,7 +65,7 @@ nav {
   left: 0;
   height: 100vh;
   width: 260px;
-  background: #111;
+  background: #f4f4f4;
   padding: 80px 24px 24px;
   box-sizing: border-box;
   z-index: 50;
@@ -73,7 +87,7 @@ nav {
 
 /* Menu links */
 .side-menu a {
-  color: white;
+  color: #000000;
   text-decoration: none;
   font-size: 18px;
 }
@@ -114,10 +128,11 @@ header img, nav img {
   margin: 120px;
   padding-left: 180px;
   padding-right: 180px;
+  /* padding-bottom: 90px; */
 }
 .landing-page h1 a{
   text-decoration: none;
-  color: #ffffff;
+  color: #000000;
   font-size: 70px;
   font-weight: 900;
   font-style: italic;
@@ -129,6 +144,7 @@ header img, nav img {
     grid-template-columns: repeat(3, 1fr);
     gap: 90px;
     padding-top: 40px;
+    padding-bottom: 120px;
     /* max-width: 1400px; */
     margin: 0 auto;
   }
@@ -223,7 +239,7 @@ header img, nav img {
   background: transparent;
   font-size: 20px;
   cursor: pointer;
-  color: #ffff;
+  color: #000000;
 }
 
 .quantity span {
@@ -354,8 +370,8 @@ header img, nav img {
 }
  
 .add-to-cart {
-  background: #ffff;
-  color: #000;
+  background: #000000;
+  color: #ffffff;
   border: none;
   font-family: 'Inter', sans-serif;
   font-size: 15px;
@@ -368,7 +384,7 @@ header img, nav img {
 }
  
 .add-to-cart:hover {
-  background: #bebebe;
+  background: #2a2a2a;
 }
  
 .add-to-cart:focus-visible {
@@ -439,7 +455,7 @@ header img, nav img {
   padding-right: 12rem;
 }
 .cart h1, h2, p{
-  color: #fff;
+  color: #000;
   /* text-decoration: underline; */
 }
 .cart h2 {
@@ -456,7 +472,7 @@ header img, nav img {
 .cart-label {
   display: flex;
   justify-content: space-between;
-  border-bottom: 1px solid white;
+  border-bottom: 1px solid #000;
 }
 .cart-label div {
   display: flex;
@@ -495,8 +511,8 @@ header img, nav img {
 
 .checkout-total > div {
   width: 500px;
-  background: #000;
-  border-top: 1px solid #fff;
+  background: #ffffff;
+  border-top: 1px solid #000;
   border-radius: 12px;
   padding: 1.5rem;
 }
@@ -505,38 +521,38 @@ header img, nav img {
   margin: 0 0 16px;
   font-size: 18px;
   font-weight: 600;
-  color: #fff;
+  color: #000;
 }
 
 .checkout-total-item {
   display: flex;
   justify-content: space-between;
   padding: 12px 0;
-  border-top: 1px solid #333;
+  border-top: 1px solid #ddd;
   font-size: 13px;
 }
 
 .checkout-total-item p {
   margin: 0;
-  color: #fff;
+  color: #000;
 }
 
 .checkout-total-item:first-of-type p:first-child {
-  color: #888;
+  color: #555;
   letter-spacing: 0.5px;
 }
 
 .checkout-total-item:nth-of-type(2) p:first-child {
-  color: #fff;
+  color: #000;
   letter-spacing: 0.5px;
 }
 
 .checkout-total button {
   width: 100%;
   margin-top: 20px;
-  background: #1a1a1a;
-  color: #fff;
-  border: 1px solid #444;
+  background: #f0f0f0;
+  color: #000;
+  border: 1px solid #ccc;
   border-radius: 8px;
   padding: 16px 24px;
   font-size: 13px;
@@ -545,15 +561,15 @@ header img, nav img {
 }
 
 .checkout-total button:hover {
-  background: #2a2a2a;
+  background: #e2e2e2;
 } 
 .delete {
-  color: white;
+  color: #000;
   padding-left: 100px;
 }
 .footer {
-    background: #000;
-    color: #fff;
+    background: #fff;
+    color: #000;
     margin-top: 80px;
     padding: 150px 20px 25px;
     text-align: center;
@@ -570,7 +586,7 @@ header img, nav img {
 .footer-title {
     font-size: 24px;
     font-weight: 80px;
-    color: #aaa;
+    color: #555;
     margin: 0 0 15px;
     text-transform: uppercase;
     letter-spacing: 2px;
@@ -597,7 +613,7 @@ header img, nav img {
     width: 100%;
     max-width: 700px;
     height: 1px;
-    background: #222;
+    background: #ddd;
     margin-bottom: 20px;
 }
 
@@ -631,6 +647,8 @@ header img, nav img {
     margin: 60px 24px;
     padding-left: 0;
     padding-right: 0;
+    padding-top: 100px;
+    padding-bottom: 250px;
     gap: 24px;
   }
 
@@ -642,6 +660,8 @@ header img, nav img {
     grid-template-columns: repeat(2, 1fr);
     gap: 24px;
     padding: 24px 16px 0;
+    margin-top: 30px;
+    margin-bottom: 70px;
   }
 
   .product-each {
@@ -714,7 +734,22 @@ header img, nav img {
 
 @media (max-width: 480px) {
   main {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    padding: 16px 12px 0;
+  }
+
+  .product-title {
+    font-size: 13px;
+    letter-spacing: 0.02em;
+  }
+
+  .product-price {
+    font-size: 13px;
+  }
+
+  .product-image-wrap img {
+    width: 100%;
   }
 
   .landing-page h1 a {

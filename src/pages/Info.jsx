@@ -1,4 +1,5 @@
 import NavBar from './NavBar'
+import Footer from '../pages/Footer'
 
 export default function info() {
     return (
@@ -14,6 +15,8 @@ export default function info() {
                 <p style={{fontSize: '20px'}}>ALL ORDERS ARE PROCESSED WITHIN 3–5<br /> BUSINESS DAYS BEFORE THEY ARE SENT<br /> OUT FOR DELIVERY. PLEASE CONFIRM THE<br/> DELIVERY INFORMATION FOR EACH ITEM<br/> BY READING ITS DESCRIPTION. TO ENSURE<br/> SMOOTH COMMUNICATION, PLEASE<br/> PROVIDE A VALID EMAIL AND PHONE<br/> NUMBER WHEN PLACING YOUR ORDER.<br/> NOTE THAT IMPORT DUTIES MAY APPLY<br/> FOR CUSTOMERS IN CERTAIN REGIONS.<br/> FOR MORE INFO, REFER TO OUR SHIPPING<br/> POLICY</p>
             </div>
             </div>
+
+            <Footer />
         </div>
     )
 }

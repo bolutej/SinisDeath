@@ -1,14 +1,12 @@
 import { useEffect, useState } from 'react'
-// import sinisdeath from '../assets/sinisdeath_logo.svg'
-import mockup from '../assets/mockup.png'
 import "../App.css"
 import { FaLessThan } from 'react-icons/fa'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import Bolu from "../assets/Boluslogo.png"
 import { supabase } from '../supabaseClient'
 import { useCart } from '../context/CartContext'
 import Navbar from './NavBar'
 import { useRegion } from '../context/RegionContext'
+import Footer from '../pages/Footer'
 
 const SIZE_ORDER = ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL']
 
@@ -252,16 +250,7 @@ export default function Product() {
           </div>
         </section>
       </section>
-      <footer className="footer">
-        <div className="footer-content">
-          <p className="footer-title">Built by</p>
-          <a href="https://x.com/BoluTejumol" target="_blank" rel="noopener noreferrer" className="footer-logo">
-            <img src={Bolu} alt="Bolu" />
-          </a>
-          <div className="footer-line"></div>
-          <p className="footer-copy">© 2026 Bolu. All rights reserved.</p>
-        </div>
-      </footer>
+      <Footer />
     </>
   )
 }

@@ -1,12 +1,12 @@
-import sinisdeath from '../assets/sinisdeath_logo.svg'
+import sinisdeath from '../assets/sinisdeath_logo_dark.svg'
 import { Link } from 'react-router-dom'
 import "../App.css"
-import Bolu from "../assets/Boluslogo.png"
 import RegionPicker from '../pages/RegionPicker'
+import Footer from '../pages/Footer'
 
 export default function Landingpage() {
   return (
-    <>
+    <div style={{}}>
       <RegionPicker />
 
       <header>
@@ -17,25 +17,8 @@ export default function Landingpage() {
         <h1><Link to="/socials">Socials</Link></h1>
       </main>
 
-      <footer className="footer">
-        <div className="footer-content">
-          <p className="footer-title">Built by</p>
-
-          <a
-            href="https://x.com/BoluTejumol"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="footer-logo"
-          >
-            <img src={Bolu} alt="Bolu" />
-          </a>
-          <div className="footer-line"></div>
-
-          <p className="footer-copy">
-            © 2026 Bolu. All rights reserved.
-          </p>
-        </div>
-      </footer>
-    </>
+        <Footer />
+      
+    </div>
   )
 }

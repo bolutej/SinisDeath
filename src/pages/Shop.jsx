@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import NavBar from './NavBar'
 import { supabase } from '../supabaseClient'
 import { useRegion } from '../context/RegionContext'
+import Footer from '../pages/Footer'
 
 export default function Shop() {
   const [products, setProducts] = useState([])
@@ -44,7 +45,7 @@ export default function Shop() {
     <>
       <NavBar />
       <main>
-        {loading && <p style={{ padding: 40 }}>Loading products...</p>}
+        {loading && <p style={{ padding: 40, textAlign: 'center' }}>Loading products...</p>}
 
         {error && (
           <p style={{ padding: 40, color: '#e07a5f' }}>
@@ -119,7 +120,7 @@ export default function Shop() {
         ))}
       </main>
 
-      <footer></footer>
+      <Footer />
     </>
   )
 }

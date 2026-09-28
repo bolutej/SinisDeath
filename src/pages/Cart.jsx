@@ -1,11 +1,10 @@
 import "../App.css"
 import { MdDelete } from "react-icons/md"
-import mockup from '../assets/mockup.png'
 import { Link } from 'react-router-dom'
 import NavBar from './NavBar'
-import Bolu from "../assets/Boluslogo.png"
 import { useCart } from '../context/CartContext'
 import { useRegion } from '../context/RegionContext'
+import Footer from '../pages/Footer'
 
 export default function Cart() {
     const { items, updateQuantity, removeItem, totalPrice } = useCart()
@@ -103,21 +102,7 @@ export default function Cart() {
         </div>
       )}
  
-      <footer className="footer">
-        <div className="footer-content">
-          <p className="footer-title">Built by</p>
-          <a
-            href="https://x.com/BoluTejumol"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="footer-logo"
-          >
-            <img src={Bolu} alt="Bolu" />
-          </a>
-          <div className="footer-line"></div>
-          <p className="footer-copy">© 2026 Bolu. All rights reserved.</p>
-        </div>
-      </footer>
+      <Footer />
     </>
   )
 }

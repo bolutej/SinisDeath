@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { FaShoppingCart } from "react-icons/fa";
 import { Link } from 'react-router-dom'
-import sinisdeath from '../assets/sinisdeath_logo.svg'
+import sinisdeath from '../assets/sinisdeath_logo_dark.svg'
 import { Squash as Hamburger } from "hamburger-react";
 import "../App.css"
 import {useCart} from '../context/CartContext'
@@ -16,7 +16,7 @@ export default function Navbar() {
         <Hamburger
           toggled={menuOpen}
           toggle={setMenuOpen}
-          style={{paddingBottom: 20}}
+          style={{paddingBottom: 20, color: '#0000'}}
         />
         {menuOpen && (
         <div
@@ -67,7 +67,7 @@ export default function Navbar() {
         </a>
         <Link to="/cart" style={{ textDecoration: 'none', position: 'relative', display: 'inline-block' }}>
         <FaShoppingCart
-          className="cart-icon"
+          className="nav-icon"
           size={28}
         />
         {totalItems > 0 && (
