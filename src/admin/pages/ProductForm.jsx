@@ -1,7 +1,7 @@
 // src/admin/pages/ProductForm.jsx
 import { useEffect, useState } from 'react'
 import { supabase } from '../../supabaseClient'
-import sinisdeath from '../../assets/sinisdeath_logo.svg'
+import sinisdeath from '../../assets/sinisdeath_logo_dark.svg'
 
 // Turns "Classic T-Shirt" into "classic-t-shirt"
 const slugify = (str) =>
@@ -483,7 +483,7 @@ export default function ProductForm({ product, onDone, onCancel }) {
               fontSize: 14,
               cursor: 'pointer',
               background: '#111',
-              color: '#fff',
+              color: 'white',
               border: 'none',
               borderRadius: 6,
             }}
@@ -500,7 +500,7 @@ export default function ProductForm({ product, onDone, onCancel }) {
               background: 'none',
               border: '1px solid #ccc',
               borderRadius: 6,
-              color: '#fff',
+              color: 'black',
             }}
           >
             Cancel
@@ -552,7 +552,7 @@ const input = {
   borderRadius: 4,
   fontFamily: 'inherit',
   boxSizing: 'border-box',
-  color: '#111',
+  color: '',
 }
 
 const miniInput = {
@@ -562,7 +562,6 @@ const miniInput = {
   border: '1px solid #fff',
   borderRadius: 4,
   boxSizing: 'border-box',
-  color: '#111',
 }
 
 const smallBtn = {
@@ -572,5 +571,5 @@ const smallBtn = {
   background: 'none',
   border: '1px solid #fff',
   borderRadius: 4,
-  color: '#fff',
+  color: 'black',
 } 

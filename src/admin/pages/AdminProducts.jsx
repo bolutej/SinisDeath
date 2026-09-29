@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../../supabaseClient'
 import ProductForm from './ProductForm'
-import sinisdeath from '../../assets/sinisdeath_logo.svg'
+import sinisdeath from '../../assets/sinisdeath_logo_dark.svg'
 
 export default function AdminProducts() {
   const [products, setProducts] = useState([])

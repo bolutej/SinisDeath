@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { supabase } from '../../supabaseClient'
-import sinisdeath from '../../assets/sinisdeath_logo.svg'
+import sinisdeath from '../../assets/sinisdeath_logo_dark.svg'
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState({
@@ -53,6 +53,7 @@ export default function AdminDashboard() {
           gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
           gap: 12,
           marginBottom: 32,
+          
         }}
       >
         <StatCard label="Products" value={loading ? '—' : stats.productCount} />
@@ -90,7 +91,7 @@ function StatCard({ label, value }) {
         padding: 16,
       }}
     >
-      <p style={{ fontSize: 20, color: '#ffff', margin: 0, borderBottom: '1px solid #e5e5e5', paddingBottom: 10 }}>{label}</p>
+      <p style={{ fontSize: 20, color: 'black', margin: 0, borderBottom: '1px solid #e5e5e5', paddingBottom: 10 }}>{label}</p>
       <p style={{ fontSize: 24, fontWeight: 500, margin: '4px 0 0', paddingTop: 10  }}>{value}</p>
     </div>
   )
@@ -102,6 +103,6 @@ const linkCardStyle = {
   border: '1px solid #e5e5e5',
   borderRadius: 8,
   textDecoration: 'none',
-  color: '#ffff',
+  color: 'black',
   fontSize: 14,
 }

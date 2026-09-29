@@ -218,6 +218,8 @@ export default function Footer() {
 }
 .sd-built { display: inline-flex; align-items: center; gap: 10px; }
 .sd-bolu-icon { display: block; width: 28px; height: auto; }
+.sd-bolu-icon:hover {transform: scale(1.1);
+    opacity: 0.8;}
 
 /* Tablet: logo on its own row, legal + network side by side */
 @media (max-width: 900px) {
@@ -302,7 +304,7 @@ export default function Footer() {
     <span>&copy; 2026 SINISDEATH. All rights reserved.</span>
     <span className="sd-built">
       Built by
-      <a href="https://x.com/BoluTejumol" target="_blank" rel="noopener noreferrer" aria-label="Bolu on X">
+      <a href="https://www.instagram.com/bolutej?stkn=cjIzZG9oN3IxcGc2&utm_source=qr" target="_blank" rel="noopener noreferrer" aria-label="Bolu on X">
         <img src={boluIcon} alt="Bolu" className="sd-bolu-icon" />
       </a>
     </span>

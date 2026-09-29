@@ -1,6 +1,6 @@
 // src/admin/pages/AdminAnalytics.jsx
 import { TrafficStats } from '../TrafficStats'
-import sinisdeath from '../../assets/sinisdeath_logo.svg'
+import sinisdeath from '../../assets/sinisdeath_logo_dark.svg'
 
 
 export default function AdminAnalytics() {

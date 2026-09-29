@@ -1,7 +1,7 @@
 // src/admin/pages/AdminOrders.jsx
 import { useEffect, useState } from 'react'
 import { supabase } from '../../supabaseClient'
-import sinisdeath from '../../assets/sinisdeath_logo.svg'
+import sinisdeath from '../../assets/sinisdeath_logo_dark.svg'
 
 const STATUSES = ['pending', 'paid', 'shipped', 'delivered', 'cancelled']
 

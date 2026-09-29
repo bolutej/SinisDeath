@@ -1,19 +1,333 @@
 import { useEffect, useState } from 'react'
-import "../App.css"
 import { FaLessThan } from 'react-icons/fa'
+import { MdAdd, MdRemove } from 'react-icons/md'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { supabase } from '../supabaseClient'
 import { useCart } from '../context/CartContext'
 import Navbar from './NavBar'
 import { useRegion } from '../context/RegionContext'
 import Footer from '../pages/Footer'
+import Loading from '../pages/loadingg2'
 
 const SIZE_ORDER = ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL']
+
+const CSS = `
+.pd-page {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px 36px 100px;
+}
+
+/* BACK */
+.pd-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 10px 0 35px;
+  color: #777;
+  text-decoration: none;
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.pd-back:hover {
+  color: #000;
+}
+
+/* MAIN PRODUCT LAYOUT */
+.pd-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(360px, 0.75fr);
+  gap: 90px;
+  align-items: start;
+}
+
+/* PRODUCT IMAGE */
+.pd-image-wrap {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.pd-image-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: transform 0.45s ease;
+}
+
+.pd-image-wrap:hover img {
+  transform: scale(1.025);
+}
+
+/* PRODUCT INFORMATION */
+.pd-info {
+  padding-top: 15px;
+  max-width: 480px;
+}
+
+/* TITLE */
+.pd-title {
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 1.3;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #222;
+  margin: 0 0 12px;
+}
+
+/* PRICE */
+.pd-price {
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: #222;
+  margin: 0 0 38px;
+}
+
+/* LABELS */
+.pd-label {
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: #777;
+  margin: 0 0 13px;
+}
+
+/* COLORS */
+.pd-colors {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 13px;
+  margin-bottom: 32px;
+}
+
+.pd-color-swatch {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  padding: 0;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+.pd-color-swatch:hover {
+  transform: scale(1.08);
+}
+
+/* SIZES */
+.pd-sizes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-bottom: 32px;
+}
+
+.pd-size-btn {
+  min-width: 48px;
+  height: 40px;
+  padding: 0 13px;
+  border: 1px solid #ddd;
+  border-radius: 0;
+  background: #fff;
+  color: #222;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.pd-size-btn:hover {
+  border-color: #000;
+}
+
+.pd-size-btn.active {
+  background: #000;
+  color: #fff;
+  border-color: #000;
+}
+
+.pd-size-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+/* QUANTITY */
+.pd-stepper {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid #ddd;
+  border-radius: 0;
+  margin-bottom: 30px;
+}
+
+.pd-stepper button {
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  border: none;
+  cursor: pointer;
+  color: #222;
+}
+
+.pd-stepper button:hover {
+  background: #f5f5f5;
+}
+
+.pd-stepper span {
+  min-width: 38px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* ADD TO CART */
+.pd-add-btn {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 18px 24px;
+  background: #000;
+  color: #fff;
+  border: none;
+  border-radius: 0;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+.pd-add-btn:hover {
+  background: #222;
+}
+
+.pd-add-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* DETAILS */
+.pd-dets {
+  margin-top: 30px;
+  border-top: 1px solid #e8e8e8;
+}
+
+.pd-dets details {
+  border-bottom: 1px solid #e8e8e8;
+  padding: 18px 0;
+}
+
+.pd-dets summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  list-style: none;
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #222;
+  user-select: none;
+}
+
+.pd-dets summary::-webkit-details-marker {
+  display: none;
+}
+
+.pd-dets summary::after {
+  content: "+";
+  font-size: 18px;
+  font-weight: 300;
+  color: #999;
+}
+
+.pd-dets details[open] summary::after {
+  content: "\\2212";
+  color: #222;
+}
+
+.pd-dets p {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.8;
+  letter-spacing: 0.02em;
+  color: #666;
+  margin: 14px 0 0;
+  max-width: 60ch;
+}
+
+/* TABLET */
+@media (max-width: 1000px) {
+  .pd-page {
+    padding: 20px 24px 80px;
+  }
+
+  .pd-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(300px, 0.8fr);
+    gap: 50px;
+  }
+
+  .pd-title {
+    font-size: 24px;
+  }
+}
+
+/* MOBILE */
+@media (max-width: 700px) {
+  .pd-page {
+    padding: 15px 14px 60px;
+  }
+
+  .pd-back {
+    margin-bottom: 22px;
+  }
+
+  .pd-grid {
+    grid-template-columns: 1fr;
+    gap: 35px;
+  }
+
+  .pd-image-wrap {
+    aspect-ratio: 1 / 1;
+  }
+
+  .pd-info {
+    max-width: none;
+    padding-top: 0;
+  }
+
+  .pd-title {
+    font-size: 21px;
+    letter-spacing: 0.1em;
+  }
+
+  .pd-price {
+    font-size: 13px;
+    margin-bottom: 30px;
+  }
+}
+`
 
 export default function Product() {
   const { slug } = useParams()
   const navigate = useNavigate()
   const { addItem } = useCart()
+  const { formatPrice } = useRegion()
 
   const [product, setProduct] = useState(null)
   const [variants, setVariants] = useState([])
@@ -26,8 +340,6 @@ export default function Product() {
   useEffect(() => {
     fetchProduct()
   }, [slug])
-
-  const { formatPrice } = useRegion()
 
   const fetchProduct = async () => {
     setLoading(true)
@@ -97,7 +409,7 @@ export default function Product() {
       variantId: selectedVariant?.id ?? null,
       name: product.name,
       price: selectedVariant?.price ?? product.price,
-      image: product.image_url || mockup,
+      image: product.image_url ,
       size: selectedVariant?.size ?? null,
       color: selectedVariant?.color ?? null,
       quantity,
@@ -110,7 +422,7 @@ export default function Product() {
     return (
       <>
         <Navbar />
-        <p style={{ padding: 40 }}>Loading...</p>
+        <Loading/>
       </>
     )
   }
@@ -127,93 +439,88 @@ export default function Product() {
   return (
     <>
       <Navbar />
-      <Link to="/shop" style={{ textDecoration: 'none' }}>
-        <div className="back">
-          <FaLessThan size={14} color="gray" />
-          <p>Back</p>
-        </div>
-      </Link>
-      <section>
-        <section className="product-each">
-          <div className="">
-            <img src={product.image_url || mockup} alt={product.name} loading="lazy" />
+      <style>{CSS}</style>
+
+      <div className="pd-page">
+        <Link to="/shop" className="pd-back">
+          <FaLessThan size={12} />
+          Back
+        </Link>
+
+        <div className="pd-grid">
+          <div className="pd-image-wrap">
+            <img src={product.image_url} alt={product.name} loading="lazy" />
           </div>
-          <div className="product-section">
-            <h1 className="">{product.name}</h1>
-            <p className="">{formatPrice(selectedVariant?.price ?? product.price)}</p>
 
-            <div className="product-options">
-              {availableColors.length > 0 && (
-                <>
-                  <h5>Color{selectedColor ? `: ${selectedColor}` : ''}</h5>
-                  <div style={{ display: 'flex', gap: 10, marginBottom: 16 }}>
-                    {availableColors.map((color) => {
-                      const outOfStock = isColorOutOfStock(color)
-                      const isSelected = selectedColor === color
-                      return (
-                        <button
-                          key={color}
-                          onClick={() => setSelectedColor(color)}
-                          disabled={outOfStock}
-                          title={color}
-                          style={{
-                            width: 28,
-                            height: 28,
-                            borderRadius: '50%',
-                            background: color.toLowerCase(),
-                            border: isSelected ? '2px solid #fff' : '1px solid rgba(255,255,255,0.3)',
-                            boxShadow: isSelected ? '0 0 0 2px #000' : 'none',
-                            cursor: outOfStock ? 'not-allowed' : 'pointer',
-                            opacity: outOfStock ? 0.3 : 1,
-                            padding: 0,
-                          }}
-                        />
-                      )
-                    })}
-                  </div>
-                </>
-              )}
+          <div className="pd-info">
+            <h1 className="pd-title">{product.name}</h1>
+            <p className="pd-price">{formatPrice(selectedVariant?.price ?? product.price)}</p>
 
-              {availableSizes.length > 0 && (
-                <>
-                  <h5>Size</h5>
-                  <div className="size-options">
-                    {availableSizes.map((size) => {
-                      const outOfStock = isSizeOutOfStock(size)
-                      return (
-                        <button
-                          key={size}
-                          className={selectedSize === size ? 'active' : ''}
-                          onClick={() => setSelectedSize(size)}
-                          disabled={outOfStock}
-                          style={outOfStock ? { opacity: 0.35, cursor: 'not-allowed' } : undefined}
-                        >
-                          {size}
-                        </button>
-                      )
-                    })}
-                  </div>
-                </>
-              )}
+            {availableColors.length > 0 && (
+              <>
+                <p className="pd-label">Color{selectedColor ? `: ${selectedColor}` : ''}</p>
+                <div className="pd-colors">
+                  {availableColors.map((color) => {
+                    const outOfStock = isColorOutOfStock(color)
+                    const isSelected = selectedColor === color
+                    return (
+                      <button
+                        key={color}
+                        className="pd-color-swatch"
+                        onClick={() => setSelectedColor(color)}
+                        disabled={outOfStock}
+                        title={color}
+                        style={{
+                          background: color.toLowerCase(),
+                          border: isSelected ? '2px solid #000' : '1px solid rgba(0,0,0,0.2)',
+                          boxShadow: isSelected ? '0 0 0 2px #fff, 0 0 0 3px #000' : 'none',
+                          cursor: outOfStock ? 'not-allowed' : 'pointer',
+                          opacity: outOfStock ? 0.3 : 1,
+                        }}
+                      />
+                    )
+                  })}
+                </div>
+              </>
+            )}
 
-              <h5>Quantity</h5>
-              <div className="quantity">
-                <button onClick={() => setQuantity((q) => Math.max(1, q - 1))}>−</button>
-                <span>{quantity}</span>
-                <button onClick={() => setQuantity((q) => q + 1)}>+</button>
-              </div>
+            {availableSizes.length > 0 && (
+              <>
+                <p className="pd-label">Size</p>
+                <div className="pd-sizes">
+                  {availableSizes.map((size) => {
+                    const outOfStock = isSizeOutOfStock(size)
+                    return (
+                      <button
+                        key={size}
+                        className={`pd-size-btn${selectedSize === size ? ' active' : ''}`}
+                        onClick={() => setSelectedSize(size)}
+                        disabled={outOfStock}
+                      >
+                        {size}
+                      </button>
+                    )
+                  })}
+                </div>
+              </>
+            )}
+
+            <p className="pd-label">Quantity</p>
+            <div className="pd-stepper">
+              <button aria-label="Decrease quantity" onClick={() => setQuantity((q) => Math.max(1, q - 1))}>
+                <MdRemove size={16} />
+              </button>
+              <span>{quantity}</span>
+              <button aria-label="Increase quantity" onClick={() => setQuantity((q) => q + 1)}>
+                <MdAdd size={16} />
+              </button>
             </div>
 
-            <button
-              className="add-to-cart"
-              onClick={handleAddToCart}
-              disabled={isOutOfStock}
-              style={isOutOfStock ? { opacity: 0.4, cursor: 'not-allowed' } : undefined}
-            >
+            <button className="pd-add-btn" onClick={handleAddToCart} disabled={isOutOfStock}>
               {isOutOfStock ? 'Out of stock' : 'Add to Cart'}
             </button>
 
-            <div className="dets">
+            <div className="pd-dets">
               <details>
                 <summary>Description</summary>
                 <p>{product.description || 'No description available for this product yet.'}</p>
@@ -248,8 +555,9 @@ export default function Product() {
               </details>
             </div>
           </div>
-        </section>
-      </section>
+        </div>
+      </div>
+
       <Footer />
     </>
   )
