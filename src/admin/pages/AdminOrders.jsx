@@ -1,7 +1,7 @@
 // src/admin/pages/AdminOrders.jsx
 import { useEffect, useState } from 'react'
 import { supabase } from '../../supabaseClient'
-import sinisdeath from '../../assets/sinisdeath_logo_dark.svg'
+import AdminNavbar from './AdminNavbar'
 
 const STATUSES = ['pending', 'paid', 'shipped', 'delivered', 'cancelled']
 
@@ -67,9 +67,7 @@ export default function AdminOrders() {
   if (orders.length === 0) {
     return (
       <div style={{ width: '100%', padding: 24, boxSizing: 'border-box',  paddingBottom:'685px', fontSize: '30px',paddingRight: '80px', paddingLeft: '80px' }}>
-        <nav style={{display: 'flex', justifyContent: 'center'}}>
-                        <img src={sinisdeath} alt="Logo" style={{ width: '340px', height: 'auto', textAlign: 'center'}}/>
-                    </nav>
+        <AdminNavbar />
         <h2 style={{fontSize: '60px', paddingTop: '40px'}}>Orders</h2>
         <p style={{textAlign: 'center', paddingTop: '150px'}}>No orders yet.</p>
       </div>
@@ -78,9 +76,7 @@ export default function AdminOrders() {
 
   return (
     <div style={{width: '100%', padding: 24, boxSizing: 'border-box',}}>
-      <nav style={{display: 'flex', justifyContent: 'center'}}>
-                        <img src={sinisdeath} alt="Logo" style={{ width: '340px', height: 'auto', textAlign: 'center'}}/>
-                    </nav>
+      <AdminNavbar />
       <h2 style={{ marginBottom: 24 }}>Orders</h2>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>

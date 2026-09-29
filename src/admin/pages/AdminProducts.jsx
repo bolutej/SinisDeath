@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../../supabaseClient'
 import ProductForm from './ProductForm'
-import sinisdeath from '../../assets/sinisdeath_logo_dark.svg'
+import AdminNavbar from './AdminNavbar'
 
 export default function AdminProducts() {
   const [products, setProducts] = useState([])
@@ -80,11 +80,11 @@ export default function AdminProducts() {
 
   if (loading) return <div>Loading products...</div>
 
+ 
+
   return (
-    <div style={{paddingBottom:'620px', paddingTop: '20px', paddingRight: '80px', paddingLeft: '80px'}}>
-      <nav style={{display: 'flex', justifyContent: 'center'}}>
-                  <img src={sinisdeath} alt="Logo" style={{ width: '340px', height: 'auto', textAlign: 'center'}}/>
-              </nav>
+    <div style={{paddingBottom:'620px', paddingTop: '20px', paddingRight: '80px', paddingLeft: '80px'}}>  
+                      <AdminNavbar />   
       <div
         style={{
           display: 'flex',
@@ -181,3 +181,4 @@ const linkBtn = {
   color: '#111',
   textDecoration: 'underline',
 }
+

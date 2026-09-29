@@ -265,7 +265,7 @@ export default function ProductForm({ product, onDone, onCancel }) {
         <p style={{ color: '#c0392b', fontSize: 13, marginBottom: 16 }}>{error}</p>
       )}
 
-      <form onSubmit={handleSubmit} style={{ maxWidth: 640, color: '#fff', paddingBottom: '60px' }}>
+      <form onSubmit={handleSubmit} style={{ maxWidth: 640, paddingBottom: '60px' }}>
         <Field label="Name">
           <input
             value={form.name}
@@ -519,7 +519,7 @@ function Field({ label, children }) {
           style={{
             display: 'block',
             fontSize: 13,
-            color: '#fff',
+            // color: '#fff',
             marginBottom: 4,
           }}
         >
@@ -562,6 +562,7 @@ const miniInput = {
   border: '1px solid #fff',
   borderRadius: 4,
   boxSizing: 'border-box',
+  
 }
 
 const smallBtn = {
