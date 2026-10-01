@@ -198,14 +198,3 @@ export default function ScrambleLoadingPage({
     </div>
   );
 }
-
-/* -----------------------------------------------------------------------
-   Demo page content, shown once loading finishes. Delete this and pass
-   your real app/page as children instead:
-
-     <ScrambleLoadingPage minDuration={2000}>
-       <App />
-     </ScrambleLoadingPage>
------------------------------------------------------------------------ */
- 
- 

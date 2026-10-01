@@ -209,7 +209,7 @@ const CSS = `
 }
 
 .ct-remove:hover {
-  color: #000;
+  color: #e90e0e;
 }
 
 /* SUMMARY */

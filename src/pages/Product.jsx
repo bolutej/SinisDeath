@@ -9,7 +9,7 @@ import { useRegion } from '../context/RegionContext'
 import Footer from '../pages/Footer'
 import Loading from '../pages/loadingg2'
 
-const SIZE_ORDER = ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL']
+const SIZE_ORDER = ['XS', 'S', 'M', 'L', 'XL']
 
 const CSS = `
 .pd-page {
@@ -17,7 +17,7 @@ const CSS = `
   margin: 0 auto;
   padding: 20px 36px 100px;
 }
-
+ 
 /* BACK */
 .pd-back {
   display: inline-flex;
@@ -31,11 +31,11 @@ const CSS = `
   text-transform: uppercase;
   letter-spacing: 0.12em;
 }
-
+ 
 .pd-back:hover {
   color: #000;
 }
-
+ 
 /* MAIN PRODUCT LAYOUT */
 .pd-grid {
   display: grid;
@@ -43,7 +43,7 @@ const CSS = `
   gap: 90px;
   align-items: start;
 }
-
+ 
 /* PRODUCT IMAGE */
 .pd-image-wrap {
   width: 100%;
@@ -54,24 +54,24 @@ const CSS = `
   justify-content: center;
   overflow: hidden;
 }
-
+ 
 .pd-image-wrap img {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  transition: transform 0.45s ease;
+  transition: transform 0.45s ease, opacity 0.2s ease;
 }
-
+ 
 .pd-image-wrap:hover img {
   transform: scale(1.025);
 }
-
+ 
 /* PRODUCT INFORMATION */
 .pd-info {
   padding-top: 15px;
   max-width: 480px;
 }
-
+ 
 /* TITLE */
 .pd-title {
   font-size: 28px;
@@ -82,7 +82,7 @@ const CSS = `
   color: #222;
   margin: 0 0 12px;
 }
-
+ 
 /* PRICE */
 .pd-price {
   font-size: 15px;
@@ -91,7 +91,7 @@ const CSS = `
   color: #222;
   margin: 0 0 38px;
 }
-
+ 
 /* LABELS */
 .pd-label {
   font-size: 10px;
@@ -101,7 +101,7 @@ const CSS = `
   color: #777;
   margin: 0 0 13px;
 }
-
+ 
 /* COLORS */
 .pd-colors {
   display: flex;
@@ -109,7 +109,7 @@ const CSS = `
   gap: 13px;
   margin-bottom: 32px;
 }
-
+ 
 .pd-color-swatch {
   width: 30px;
   height: 30px;
@@ -118,11 +118,11 @@ const CSS = `
   cursor: pointer;
   transition: transform 0.15s ease;
 }
-
+ 
 .pd-color-swatch:hover {
   transform: scale(1.08);
 }
-
+ 
 /* SIZES */
 .pd-sizes {
   display: flex;
@@ -130,7 +130,7 @@ const CSS = `
   gap: 7px;
   margin-bottom: 32px;
 }
-
+ 
 .pd-size-btn {
   min-width: 48px;
   height: 40px;
@@ -145,22 +145,22 @@ const CSS = `
   cursor: pointer;
   transition: all 0.15s ease;
 }
-
+ 
 .pd-size-btn:hover {
   border-color: #000;
 }
-
+ 
 .pd-size-btn.active {
   background: #000;
   color: #fff;
   border-color: #000;
 }
-
+ 
 .pd-size-btn:disabled {
   opacity: 0.3;
   cursor: not-allowed;
 }
-
+ 
 /* QUANTITY */
 .pd-stepper {
   display: inline-flex;
@@ -169,7 +169,7 @@ const CSS = `
   border-radius: 0;
   margin-bottom: 30px;
 }
-
+ 
 .pd-stepper button {
   width: 38px;
   height: 38px;
@@ -181,18 +181,18 @@ const CSS = `
   cursor: pointer;
   color: #222;
 }
-
+ 
 .pd-stepper button:hover {
   background: #f5f5f5;
 }
-
+ 
 .pd-stepper span {
   min-width: 38px;
   text-align: center;
   font-size: 12px;
   font-weight: 500;
 }
-
+ 
 /* ADD TO CART */
 .pd-add-btn {
   display: block;
@@ -210,27 +210,27 @@ const CSS = `
   cursor: pointer;
   margin-bottom: 10px;
 }
-
+ 
 .pd-add-btn:hover {
   background: #222;
 }
-
+ 
 .pd-add-btn:disabled {
   opacity: 0.4;
   cursor: not-allowed;
 }
-
+ 
 /* DETAILS */
 .pd-dets {
   margin-top: 30px;
   border-top: 1px solid #e8e8e8;
 }
-
+ 
 .pd-dets details {
   border-bottom: 1px solid #e8e8e8;
   padding: 18px 0;
 }
-
+ 
 .pd-dets summary {
   display: flex;
   justify-content: space-between;
@@ -244,23 +244,23 @@ const CSS = `
   color: #222;
   user-select: none;
 }
-
+ 
 .pd-dets summary::-webkit-details-marker {
   display: none;
 }
-
+ 
 .pd-dets summary::after {
   content: "+";
   font-size: 18px;
   font-weight: 300;
   color: #999;
 }
-
+ 
 .pd-dets details[open] summary::after {
   content: "\\2212";
   color: #222;
 }
-
+ 
 .pd-dets p {
   font-size: 12px;
   font-weight: 400;
@@ -270,59 +270,58 @@ const CSS = `
   margin: 14px 0 0;
   max-width: 60ch;
 }
-
+ 
 /* TABLET */
 @media (max-width: 1000px) {
   .pd-page {
     padding: 20px 24px 80px;
   }
-
+ 
   .pd-grid {
     grid-template-columns: minmax(0, 1fr) minmax(300px, 0.8fr);
     gap: 50px;
   }
-
+ 
   .pd-title {
     font-size: 24px;
   }
 }
-
+ 
 /* MOBILE */
 @media (max-width: 700px) {
   .pd-page {
     padding: 15px 14px 60px;
   }
-
+ 
   .pd-back {
     margin-bottom: 22px;
   }
-
+ 
   .pd-grid {
     grid-template-columns: 1fr;
     gap: 35px;
   }
-
+ 
   .pd-image-wrap {
     aspect-ratio: 1 / 1;
   }
-
+ 
   .pd-info {
     max-width: none;
     padding-top: 0;
   }
-
+ 
   .pd-title {
     font-size: 21px;
     letter-spacing: 0.1em;
   }
-
+ 
   .pd-price {
     font-size: 13px;
     margin-bottom: 30px;
   }
 }
 `
-
 export default function Product() {
   const { slug } = useParams()
   const navigate = useNavigate()
@@ -384,6 +383,12 @@ export default function Product() {
       ? (selectedVariant?.stock_quantity ?? 0) <= 0
       : (product?.stock_quantity ?? 0) <= 0
 
+
+   const colorImage = selectedColor
+    ? variants.find((v) => v.color === selectedColor && v.image_url)?.image_url
+    : null
+  const displayedImage = colorImage || product?.image_url || '/placeholder.png'
+ 
   const isSizeOutOfStock = (size) => {
     const matches = variants.filter(
       (v) => v.size === size && (availableColors.length === 0 || v.color === selectedColor)
@@ -449,7 +454,7 @@ export default function Product() {
 
         <div className="pd-grid">
           <div className="pd-image-wrap">
-            <img src={product.image_url} alt={product.name} loading="lazy" />
+            <img src={displayedImage} alt={product.name} loading="lazy" />
           </div>
 
           <div className="pd-info">

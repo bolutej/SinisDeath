@@ -1,10 +1,11 @@
-import sinisdeath from '../assets/sinisdeath_logo_dark.svg'
+import sinisdeath from '../assets/sinisdeath_logo.svg'
 import { Link } from 'react-router-dom'
 import { useEffect } from 'react'
 import "../App.css"
 import RegionPicker from '../pages/RegionPicker'
 import { useRegion } from '../context/RegionContext'
-import Footer from '../pages/Footer'
+// import Footer from '../pages/Footer'
+import BackgroundCarousel from './BackgroundCarousel'
 
 export default function Landingpage() {
   const { setPickerOpen } = useRegion()
@@ -16,9 +17,8 @@ export default function Landingpage() {
   }, [])
  
   return (
-    <>
+    <BackgroundCarousel>
       <RegionPicker />
- 
       <header>
         <img src={sinisdeath} alt="Logo" />
       </header>
@@ -26,8 +26,6 @@ export default function Landingpage() {
         <h1><Link to="/shop">Shop</Link></h1>
         <h1><Link to="/socials">Socials</Link></h1>
       </main>
- 
-      <Footer/>
-    </>
+    </BackgroundCarousel>
   )
 }

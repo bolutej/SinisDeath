@@ -11,7 +11,7 @@ const slugify = (str) =>
     .replace(/[^a-z0-9\s-]/g, '')
     .replace(/\s+/g, '-')
 
-const SIZE_OPTIONS = ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL']
+const SIZE_OPTIONS = ['XS', 'S', 'M', 'L', 'XL']
 
 export default function ProductForm({ product, onDone, onCancel }) {
   const isEditing = Boolean(product?.id)
@@ -32,10 +32,15 @@ export default function ProductForm({ product, onDone, onCancel }) {
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState(null)
 
-  // Image upload state
+  // Image upload state (main product photo)
   const [imageFile, setImageFile] = useState(null)
   const [imagePreview, setImagePreview] = useState(null)
   const [uploadingImage, setUploadingImage] = useState(false)
+
+  // Per-variant image uploads, keyed by the variant's position in the
+  // variants array (not its id, since new variants don't have one yet).
+  // Shape: { 0: { file, preview }, 2: { file, preview } }
+  const [variantImages, setVariantImages] = useState({})
 
   // Load categories, plus the full product + variants if editing
   useEffect(() => {
@@ -97,29 +102,45 @@ export default function ProductForm({ product, onDone, onCancel }) {
     setImagePreview(URL.createObjectURL(file)) // instant local preview
   }
 
-  const uploadImage = async (productId) => {
-    if (!imageFile) return null
-
-    setUploadingImage(true)
-    const fileExt = imageFile.name.split('.').pop()
-    const filePath = `${productId}-${Date.now()}.${fileExt}`
+  // Shared uploader, reused for both the main product image and each
+  // variant image — same bucket, different file name so nothing collides.
+  const uploadToStorage = async (file, namePrefix) => {
+    const fileExt = file.name.split('.').pop()
+    const filePath = `${namePrefix}-${Date.now()}.${fileExt}`
 
     const { error: uploadError } = await supabase.storage
       .from('product-images')
-      .upload(filePath, imageFile, { upsert: true })
+      .upload(filePath, file, { upsert: true })
 
     if (uploadError) {
-      setError(`Image upload failed: ${uploadError.message}`)
+      throw new Error(`Image upload failed: ${uploadError.message}`)
+    }
+
+    const { data } = supabase.storage.from('product-images').getPublicUrl(filePath)
+    return data.publicUrl
+  }
+
+  const uploadImage = async (productId) => {
+    if (!imageFile) return null
+    setUploadingImage(true)
+    try {
+      const url = await uploadToStorage(imageFile, productId)
+      setUploadingImage(false)
+      return url
+    } catch (err) {
+      setError(err.message)
       setUploadingImage(false)
       return null
     }
+  }
 
-    const { data } = supabase.storage
-      .from('product-images')
-      .getPublicUrl(filePath)
-
-    setUploadingImage(false)
-    return data.publicUrl
+  const handleVariantImageChange = (index, e) => {
+    const file = e.target.files[0]
+    if (!file) return
+    setVariantImages((prev) => ({
+      ...prev,
+      [index]: { file, preview: URL.createObjectURL(file) },
+    }))
   }
 
   // --- Variants ---
@@ -149,6 +170,11 @@ export default function ProductForm({ product, onDone, onCancel }) {
       }
     }
     setVariants((v) => v.filter((_, i) => i !== index))
+    setVariantImages((prev) => {
+      const next = { ...prev }
+      delete next[index]
+      return next
+    })
   }
 
   // --- Submit ---
@@ -197,7 +223,7 @@ export default function ProductForm({ product, onDone, onCancel }) {
       productId = data.id
     }
 
-    // If a new image was picked, upload it now and save its URL
+    // If a new main image was picked, upload it now and save its URL
     if (imageFile) {
       const uploadedUrl = await uploadImage(productId)
       if (!uploadedUrl) {
@@ -215,8 +241,11 @@ export default function ProductForm({ product, onDone, onCancel }) {
       }
     }
 
-    // Save variants: update existing, insert new
-    for (const variant of variants) {
+    // Save variants: update existing, insert new, then upload any
+    // per-variant images that were picked (needs the variant's id, so
+    // this happens after the insert/update, same pattern as above).
+    for (let i = 0; i < variants.length; i++) {
+      const variant = variants[i]
       const variantPayload = {
         product_id: productId,
         size: variant.size || null,
@@ -225,6 +254,8 @@ export default function ProductForm({ product, onDone, onCancel }) {
         price: variant.price ? Number(variant.price) : null,
         stock_quantity: Number(variant.stock_quantity) || 0,
       }
+
+      let variantId = variant.id
 
       if (variant.id) {
         const { error } = await supabase
@@ -237,11 +268,34 @@ export default function ProductForm({ product, onDone, onCancel }) {
           return
         }
       } else {
-        const { error } = await supabase
+        const { data, error } = await supabase
           .from('product_variants')
           .insert(variantPayload)
+          .select('id')
+          .single()
         if (error) {
           setError(`Variant error: ${error.message}`)
+          setSaving(false)
+          return
+        }
+        variantId = data.id
+      }
+
+      const pendingImage = variantImages[i]
+      if (pendingImage?.file) {
+        try {
+          const url = await uploadToStorage(pendingImage.file, `variant-${variantId}`)
+          const { error: imgErr } = await supabase
+            .from('product_variants')
+            .update({ image_url: url })
+            .eq('id', variantId)
+          if (imgErr) {
+            setError(`Variant image error: ${imgErr.message}`)
+            setSaving(false)
+            return
+          }
+        } catch (err) {
+          setError(err.message)
           setSaving(false)
           return
         }
@@ -385,76 +439,100 @@ export default function ProductForm({ product, onDone, onCancel }) {
               </div>
               <p className="pf-hint pf-hint-block">
                 Leave empty if this product has no size/color options. It will use the
-                stock number above instead.
+                stock number above instead. A variant's image is optional — if left
+                blank, that variant just uses the product photo on the right.
               </p>
 
-              {variants.map((variant, i) => (
-                <div key={variant.id ?? `new-${i}`} className="pf-variant">
-                  <div className="pf-variant-head">
-                    <span className="pf-variant-name">Variant {i + 1}</span>
-                    <button
-                      type="button"
-                      className="pf-link is-danger"
-                      onClick={() => removeVariant(i)}
-                      aria-label={`Remove variant ${i + 1}`}
-                    >
-                      Remove
-                    </button>
-                  </div>
-
-                  <div className="pf-variant-grid">
-                    <Field label="Size" small>
-                      <select
-                        className="pf-input is-small"
-                        value={variant.size ?? ''}
-                        onChange={(e) => updateVariant(i, 'size', e.target.value)}
+              {variants.map((variant, i) => {
+                const variantPreview = variantImages[i]?.preview || variant.image_url
+                return (
+                  <div key={variant.id ?? `new-${i}`} className="pf-variant">
+                    <div className="pf-variant-head">
+                      <span className="pf-variant-name">Variant {i + 1}</span>
+                      <button
+                        type="button"
+                        className="pf-link is-danger"
+                        onClick={() => removeVariant(i)}
+                        aria-label={`Remove variant ${i + 1}`}
                       >
-                        <option value="">No size</option>
-                        {SIZE_OPTIONS.map((size) => (
-                          <option key={size} value={size}>
-                            {size}
-                          </option>
-                        ))}
-                      </select>
-                    </Field>
-                    <Field label="Color" small>
-                      <input
-                        className="pf-input is-small"
-                        value={variant.color ?? ''}
-                        onChange={(e) => updateVariant(i, 'color', e.target.value)}
-                        placeholder="Black"
-                      />
-                    </Field>
-                    <Field label="SKU" small>
-                      <input
-                        className="pf-input is-small"
-                        value={variant.sku ?? ''}
-                        onChange={(e) => updateVariant(i, 'sku', e.target.value)}
-                        placeholder="TSHIRT-M-BLK"
-                      />
-                    </Field>
-                    <Field label="Price override" small>
-                      <input
-                        className="pf-input is-small"
-                        type="number"
-                        step="0.01"
-                        value={variant.price ?? ''}
-                        onChange={(e) => updateVariant(i, 'price', e.target.value)}
-                        placeholder="—"
-                      />
-                    </Field>
-                    <Field label="Stock" small>
-                      <input
-                        className="pf-input is-small"
-                        type="number"
-                        min="0"
-                        value={variant.stock_quantity ?? 0}
-                        onChange={(e) => updateVariant(i, 'stock_quantity', e.target.value)}
-                      />
-                    </Field>
+                        Remove
+                      </button>
+                    </div>
+
+                    <div className="pf-variant-grid">
+                      <Field label="Size" small>
+                        <select
+                          className="pf-input is-small"
+                          value={variant.size ?? ''}
+                          onChange={(e) => updateVariant(i, 'size', e.target.value)}
+                        >
+                          <option value="">No size</option>
+                          {SIZE_OPTIONS.map((size) => (
+                            <option key={size} value={size}>
+                              {size}
+                            </option>
+                          ))}
+                        </select>
+                      </Field>
+                      <Field label="Color" small>
+                        <input
+                          className="pf-input is-small"
+                          value={variant.color ?? ''}
+                          onChange={(e) => updateVariant(i, 'color', e.target.value)}
+                          placeholder="Black"
+                        />
+                      </Field>
+                      <Field label="SKU" small>
+                        <input
+                          className="pf-input is-small"
+                          value={variant.sku ?? ''}
+                          onChange={(e) => updateVariant(i, 'sku', e.target.value)}
+                          placeholder="TSHIRT-M-BLK"
+                        />
+                      </Field>
+                      <Field label="Price override" small>
+                        <input
+                          className="pf-input is-small"
+                          type="number"
+                          step="0.01"
+                          value={variant.price ?? ''}
+                          onChange={(e) => updateVariant(i, 'price', e.target.value)}
+                          placeholder="—"
+                        />
+                      </Field>
+                      <Field label="Stock" small>
+                        <input
+                          className="pf-input is-small"
+                          type="number"
+                          min="0"
+                          value={variant.stock_quantity ?? 0}
+                          onChange={(e) => updateVariant(i, 'stock_quantity', e.target.value)}
+                        />
+                      </Field>
+                      <Field label="Image" small>
+                        <div className="pf-variant-image">
+                          <div className="pf-variant-thumb">
+                            {variantPreview ? (
+                              <img src={variantPreview} alt="" />
+                            ) : (
+                              <IconImage size={16} />
+                            )}
+                          </div>
+                          <label className="pf-upload is-small">
+                            <input
+                              className="pf-file"
+                              type="file"
+                              accept="image/*"
+                              onChange={(e) => handleVariantImageChange(i, e)}
+                            />
+                            <span>{variantPreview ? 'Replace' : 'Choose'}</span>
+                          </label>
+                        </div>
+                      </Field>
+                    </div>
                   </div>
-                </div>
-              ))}
+                )
+              })}
             </section>
           </div>
 
@@ -532,11 +610,11 @@ function Field({ label, hint, small = false, children }) {
   )
 }
 
-function IconImage() {
+function IconImage({ size = 26 }) {
   return (
     <svg
-      width="26"
-      height="26"
+      width={size}
+      height={size}
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -634,7 +712,16 @@ input[type='number'].pf-input { font-variant-numeric: tabular-nums; }
 .pf-variant:last-child { border-bottom: 1px solid var(--line); }
 .pf-variant-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
 .pf-variant-name { font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; }
-.pf-variant-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 16px; }
+.pf-variant-grid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 16px; }
+
+/* Per-variant image mini control */
+.pf-variant-image { display: flex; align-items: center; gap: 8px; }
+.pf-variant-thumb {
+  width: 44px; height: 44px; flex: none; background: #fafafa; border: 1px solid var(--line);
+  display: grid; place-items: center; overflow: hidden; color: var(--muted);
+}
+.pf-variant-thumb img { width: 100%; height: 100%; object-fit: contain; display: block; }
+.pf-upload.is-small { height: 34px; padding: 0 12px; font-size: 10px; }
 
 /* Buttons and links */
 .pf-link {
