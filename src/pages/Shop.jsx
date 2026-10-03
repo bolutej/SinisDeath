@@ -62,7 +62,7 @@ const CSS = `
 }
 
 .sp-card:hover .sp-image-wrap img {
-  transform: scale(1.035);
+  transform: scale(1.040);
 }
 
 /* OUT OF STOCK */
@@ -190,7 +190,10 @@ export default function Shop() {
         stock_quantity,
         image_url,
         categories ( name ),
-        product_variants ( color )
+        product_variants (
+          color,
+          stock_quantity
+        )
       `)
       .eq('is_active', true)
       .order('created_at', { ascending: false })
@@ -198,7 +201,7 @@ export default function Shop() {
     if (error) {
       setError(error.message)
     } else {
-      setProducts(data)
+      setProducts(data || [])
     }
 
     setLoading(false)
@@ -207,6 +210,7 @@ export default function Shop() {
   return (
     <>
       <NavBar />
+
       <style>{CSS}</style>
 
       <div className="sp-page">
@@ -231,15 +235,27 @@ export default function Shop() {
           <div className="sp-grid">
 
             {products.map((product) => {
+
+              const variants = product.product_variants ?? []
+
+              const totalStock =
+                variants.length === 0
+                  ? Number(product.stock_quantity ?? 0)
+                  : variants.reduce(
+                      (total, variant) =>
+                        total + Number(variant.stock_quantity ?? 0),
+                      0
+                    )
+
+              const outOfStock = totalStock <= 0
+
               const colors = [
                 ...new Set(
-                  (product.product_variants ?? [])
+                  variants
                     .map((v) => v.color)
                     .filter(Boolean)
                 )
               ]
-
-              const outOfStock = product.stock_quantity === 0
 
               return (
                 <Link
@@ -247,6 +263,7 @@ export default function Shop() {
                   key={product.id}
                   className="sp-card"
                 >
+
                   <div className="sp-image-wrap">
 
                     {outOfStock && (
@@ -287,6 +304,7 @@ export default function Shop() {
                     )}
 
                   </div>
+
                 </Link>
               )
             })}

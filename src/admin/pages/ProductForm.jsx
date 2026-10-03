@@ -11,7 +11,7 @@ const slugify = (str) =>
     .replace(/[^a-z0-9\s-]/g, '')
     .replace(/\s+/g, '-')
 
-const SIZE_OPTIONS = ['XS', 'S', 'M', 'L', 'XL']
+const SIZE_OPTIONS = ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL']
 
 export default function ProductForm({ product, onDone, onCancel }) {
   const isEditing = Boolean(product?.id)
@@ -41,6 +41,13 @@ export default function ProductForm({ product, onDone, onCancel }) {
   // variants array (not its id, since new variants don't have one yet).
   // Shape: { 0: { file, preview }, 2: { file, preview } }
   const [variantImages, setVariantImages] = useState({})
+
+  // Bulk size picker: pick a color + several sizes at once, then add
+  // one variant row per size in a single click instead of adding rows
+  // one at a time.
+  const [bulkColor, setBulkColor] = useState('')
+  const [bulkStock, setBulkStock] = useState('')
+  const [bulkSizes, setBulkSizes] = useState([])
 
   // Load categories, plus the full product + variants if editing
   useEffect(() => {
@@ -150,6 +157,39 @@ export default function ProductForm({ product, onDone, onCancel }) {
       ...v,
       { _isNew: true, size: '', color: '', sku: '', price: '', stock_quantity: 0 },
     ])
+
+  const toggleBulkSize = (size) =>
+    setBulkSizes((prev) =>
+      prev.includes(size) ? prev.filter((s) => s !== size) : [...prev, size]
+    )
+
+  // Adds one variant row per selected size, all sharing the same color.
+  // Skips any size that's already a row with this exact color, so
+  // clicking it again after adding doesn't create duplicates.
+  const addBulkVariants = () => {
+    if (bulkSizes.length === 0) return
+
+    const existingPairs = new Set(
+      variants.map((v) => `${v.size ?? ''}|${v.color ?? ''}`)
+    )
+
+    const newRows = bulkSizes
+      .filter((size) => !existingPairs.has(`${size}|${bulkColor}`))
+      .map((size) => ({
+        _isNew: true,
+        size,
+        color: bulkColor || '',
+        sku: '',
+        price: '',
+        stock_quantity: bulkStock === '' ? 0 : Number(bulkStock),
+      }))
+
+    setVariants((v) => [...v, ...newRows])
+    setBulkSizes([])
+    // Color and stock are left as-is (not cleared) so you can add another
+    // batch of sizes in the same color/stock quickly, or just tweak the
+    // color for the next one without retyping the stock number.
+  }
 
   const updateVariant = (index, field, value) =>
     setVariants((v) =>
@@ -443,6 +483,53 @@ export default function ProductForm({ product, onDone, onCancel }) {
                 blank, that variant just uses the product photo on the right.
               </p>
 
+              <div className="pf-bulk">
+                <span className="pf-label">Add multiple sizes at once</span>
+                <div className="pf-bulk-row">
+                  <input
+                    className="pf-input is-small pf-bulk-color"
+                    value={bulkColor}
+                    onChange={(e) => setBulkColor(e.target.value)}
+                    placeholder="Color (optional)"
+                  />
+                  <input
+                    className="pf-input is-small pf-bulk-stock"
+                    type="number"
+                    min="0"
+                    value={bulkStock}
+                    onChange={(e) => setBulkStock(e.target.value)}
+                    placeholder="Stock"
+                  />
+                  <div className="pf-bulk-sizes">
+                    {SIZE_OPTIONS.map((size) => (
+                      <button
+                        key={size}
+                        type="button"
+                        className={`pf-size-toggle${bulkSizes.includes(size) ? ' is-on' : ''}`}
+                        onClick={() => toggleBulkSize(size)}
+                      >
+                        {size}
+                      </button>
+                    ))}
+                  </div>
+                  <button
+                    type="button"
+                    className="pf-outline"
+                    onClick={addBulkVariants}
+                    disabled={bulkSizes.length === 0}
+                  >
+                    Add {bulkSizes.length > 0 ? bulkSizes.length : ''} size
+                    {bulkSizes.length === 1 ? '' : 's'}
+                  </button>
+                </div>
+                <p className="pf-hint">
+                  Pick a color and stock count, select every size it comes in, then
+                  add them all at once — each row is created with that stock number
+                  already filled in. You can still edit SKU, price, stock, or image
+                  per row below if one size needs something different.
+                </p>
+              </div>
+
               {variants.map((variant, i) => {
                 const variantPreview = variantImages[i]?.preview || variant.image_url
                 return (
@@ -713,6 +800,25 @@ input[type='number'].pf-input { font-variant-numeric: tabular-nums; }
 .pf-variant-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
 .pf-variant-name { font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; }
 .pf-variant-grid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 16px; }
+
+/* Bulk size picker */
+.pf-bulk { border: 1px solid var(--line); padding: 20px; margin-bottom: 28px; background: #fafafa; }
+.pf-bulk > .pf-label { display: block; margin-bottom: 14px; }
+.pf-bulk-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.pf-bulk-color { width: 160px; flex: none; }
+.pf-bulk-stock { width: 90px; flex: none; }
+.pf-bulk-sizes { display: flex; flex-wrap: wrap; gap: 8px; flex: 1; min-width: 200px; }
+.pf-size-toggle {
+  min-width: 44px; height: 40px; padding: 0 12px;
+  border: 1px solid var(--line); background: #fff; color: var(--ink); cursor: pointer;
+  font: inherit; font-size: 12px; font-weight: 500; letter-spacing: 0.06em;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+.pf-size-toggle:hover { border-color: var(--ink); }
+.pf-size-toggle.is-on { background: var(--ink); color: #fff; border-color: var(--ink); }
+.pf-bulk .pf-outline:disabled { opacity: 0.4; cursor: not-allowed; }
+.pf-bulk .pf-outline:disabled:hover { background: #fff; color: var(--ink); }
+.pf-bulk > .pf-hint { margin-top: 14px; }
 
 /* Per-variant image mini control */
 .pf-variant-image { display: flex; align-items: center; gap: 8px; }
